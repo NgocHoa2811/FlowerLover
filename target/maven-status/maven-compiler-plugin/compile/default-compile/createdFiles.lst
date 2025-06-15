@@ -1,0 +1,16 @@
+DisplayAcountTable.class
+com\flowershop\servlet\RedirectServlet.class
+com\flowershop\servlet\SalesStatisticsServlet.class
+com\flowershop\dao\Product.class
+com\flowershop\model\Product.class
+AddToCartServlet.class
+LoginServlet.class
+OrderServlet.class
+com\flowershop\dao\ProductDAO.class
+RegisterServlet.class
+TestMySql.class
+com\flowershop\servlet\AdminProductServlet.class
+DatabaseConnection.class
+UserDAO.class
+com\mycompany\maven1\resources\JakartaEE10Resource.class
+com\mycompany\maven1\JakartaRestConfiguration.class
