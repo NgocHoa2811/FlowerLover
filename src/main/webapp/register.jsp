@@ -1,9 +1,3 @@
-<%-- 
-    Document   : register
-    Created on : Mar 26, 2025, 2:23:13 PM
-    Author     : PC
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -29,7 +23,17 @@
     
     <div class="login-container">
         <h1 class="login-title">Đăng ký</h1>
-        <form action="RegisterServlet" method="post">
+        <% if (request.getAttribute("error") != null) { %>
+            <div class="error-message">
+                <%= request.getAttribute("error") %>
+            </div>
+        <% } %>
+        
+        <form action="/RegisterServlet" method="post">
+            <div class="form-group">
+                <label for="fullName">Họ tên</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
@@ -39,11 +43,8 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <label for="role">Role</label>
-                <select id="role" name="role" required>
-                    <option value="customer">Khách hàng</option>
-                    <option value="admin">Admin</option>
-                </select>
+                <label for="confirmPassword">Xác nhận mật khẩu</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
             </div>
             <button type="submit" class="login-btn">Đăng ký</button>
         </form>
