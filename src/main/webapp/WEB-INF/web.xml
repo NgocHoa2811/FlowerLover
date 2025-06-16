@@ -2,13 +2,12 @@
 <web-app xmlns="http://jakarta.ee/xml/ns/jakartaee" version="5.0">
     <display-name>My Web Application</display-name>
 
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.mycompany.servlet.UserServlet</servlet-class>
+<!--    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.flowershop.controller.RegisterServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
-    </servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>-->
 </web-app>
