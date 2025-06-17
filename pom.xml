@@ -99,6 +99,47 @@
             <version>0.2.6</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>am.ik.json</groupId>
+            <artifactId>tiny-json</artifactId>
+            <version>0.1.2</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson</artifactId>
+            <version>5.4.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>club.gclmit</groupId>
+            <artifactId>chaos-json</artifactId>
+            <version>2.1.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version> <!-- Sử dụng phiên bản mới nhất -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230227</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jdrupes.json</groupId>
+            <artifactId>json</artifactId>
+            <version>2.3.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
