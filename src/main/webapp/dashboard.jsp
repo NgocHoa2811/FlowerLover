@@ -21,7 +21,7 @@
     <div class="sidebar">
         <div class="logo"><img src="https://i.pinimg.com/736x/57/1d/61/571d612946ec0c51d55d9b7b6700afc2.jpg" alt="alt"/></div>
         <button onclick="showTab('product')"><span class="material-symbols-outlined">local_florist</span></button>
-        <button onclick="showTab('order')"><span class="material-symbols-outlined">receipt_long</span></button>
+         <button onclick="window.location.href='dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
         <button onclick="showTab('client')"><span class="material-symbols-outlined">person</span></button>
     </div>
 
