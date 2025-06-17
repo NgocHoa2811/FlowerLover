@@ -103,6 +103,7 @@ public class FlowerManagementServlet extends HttpServlet {
                         .append("description", description)
                         .append("created_at", new Date());
                 flowers.insertOne(newFlower);
+                jsonResponse.put("id", newFlower.getObjectId("_id").toString()); // Thêm ID vào response
                 System.out.println("Thêm sản phẩm thành công at " + new Date() + ": " + newFlower);
             } else if ("PUT".equals(method) && id != null) {
                 if (!ObjectId.isValid(id)) {

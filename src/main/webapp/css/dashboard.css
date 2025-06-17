@@ -262,3 +262,30 @@ table#flowersTable img {
 .delete-btn span {
     color: #f44336; /* Màu đỏ cho xóa */
 }
+.form-actions .save-btn:hover {
+    background-color: #45a049;
+}
+.form-actions .cancel-btn {
+    background-color: #f44336;
+    color: white;
+}
+.form-actions .cancel-btn:hover {
+    background-color: #da190b;
+}
+/* === NEW ADDITION FOR dash-order.jsp - START === */
+/* Add table-container for horizontal scrolling */
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.table-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
+}
+
+.order-table {
+    min-width: 1200px; /* Ensure minimum width to trigger scrolling if needed */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+/* === NEW ADDITION FOR dash-order.jsp - END === */

@@ -18,7 +18,7 @@
     <div class="sidebar">
         <div class="logo"><img src="https://i.pinimg.com/736x/57/1d/61/571d612946ec0c51d55d9b7b6700afc2.jpg" alt="alt"/></div>
         <button onclick="showTab('product')"><span class="material-symbols-outlined">local_florist</span></button>
-        <button onclick="showTab('order')"><span class="material-symbols-outlined">receipt_long</span></button>
+         <button onclick="window.location.href='dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
         <button onclick="showTab('client')"><span class="material-symbols-outlined">person</span></button>
     </div>
 
@@ -205,7 +205,10 @@ function toggleEditForm(id = '', name = '', price = 0, stock = 0, image = '', ca
     if (form.classList.contains('active')) {
         document.getElementById('editId').value = id || '';
         document.getElementById('editName').value = name || '';
-        document.getElementById('editPrice').value = price || 0;
+       ument.getElementById('editImage').value = ''; // Reset file input
+        document.getElementById('editCategory').value = category || 'bó hoa';
+        document.getElementById('editDescription').value = description || '';
+        doc document.getElementById('editPrice').value = price || 0;
         document.getElementById('editStock').value = stock || 0;
         document.getElementById('editImage').value = ''; // Reset file input
         document.getElementById('editCategory').value = category || 'bó hoa';
