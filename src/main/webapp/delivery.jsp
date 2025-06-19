@@ -4,7 +4,7 @@
     Author     : PC
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,22 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dịch vụ giao hàng - FlowerLover</title>
     <link rel="stylesheet" href="css/delivery.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <a href="index.jsp" class="logo">FlowerLover</a>
-        <div class="nav">
-            <a href="index.jsp">Trang chủ</a>
-            <a href="features.jsp">Tính năng</a>
-            <a href="gallery.jsp">Bộ sưu tập</a>
-            <a href="delivery.jsp" class="active">Giao hàng</a>
-            <a href="reviews.jsp">Đánh giá</a>
-            <a href="form.jsp">Biểu mẫu</a>
-            <a href="login.jsp">Đăng nhập</a>
-        </div>
-        <a href="#contact" class="contact-btn">Liên hệ</a>
-    </div>
+    <%@ include file="header.jsp" %>
 
     <!-- Delivery Hero Section -->
     <section class="delivery-hero">
@@ -155,22 +144,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <h3>FlowerLover</h3>
-                <p>Địa chỉ: 68 Nguyễn Chí Thanh, Phường Láng Thượng, Quận Đống Đa, TP Hà Nội</p>
-                <p>Số điện thoại: (028) 1234-5678</p>       
-                <p>Giờ mở cửa: 8:00 - 20:00 (Thứ 2 - Chủ Nhật)</p>
-                <p>Email: contact@flowerlover.com</p>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            &copy; 2025 FlowerLover. All Rights Reserved.
-            <a href="#" class="scroll-top">Lên đầu trang <i class="fas fa-arrow-up"></i></a>
-        </div>
-    </footer>
+    <%@ include file="footer.jsp" %>
 </body>
 </html>
