@@ -1,5 +1,5 @@
 /* Updated index.css for FlowerLover website */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;500&display=swap');
 
 * {
     margin: 0;
@@ -14,80 +14,22 @@ body {
     line-height: 1.6;
 }
 
-.container {
+.container, .container1, .container3, .container5, .container6 {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* Header */
-header {
-    background-color: #d8e8d8;
-    padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.logo {
-    font-family: 'Dancing Script', cursive;
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-    text-decoration: none;
-}
-
-.menu {
-    display: flex;
-    list-style-type: none;
-    gap: 30px;
-}
-
-.menu li {
-    margin: 0;
-}
-
-.menu a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 14px;
-    padding: 8px 0;
-    transition: color 0.3s ease;
-}
-
-.menu a:hover {
-    color: #88b088;
-}
-
-.contact-btn {
-    background-color: #88b088;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-}
-
-.contact-btn:hover {
-    background-color: #79a179;
+/* Header (aligned with delivery.css, handled by delivery.css) */
+.header {
+    /* Styles managed by delivery.css */
 }
 
 /* Hero Section */
 .hero {
-    padding: 60px 0;
-    background-color: #f3f7f0;
-    margin-bottom: 0;
+    padding: 80px 0;
+    background-color: #e8f4ea;
 }
 
 .hero .container {
@@ -109,9 +51,8 @@ nav {
 
 .hero-image img {
     width: 100%;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 10px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .hero h1 {
@@ -120,12 +61,11 @@ nav {
     line-height: 1.2;
     margin-bottom: 20px;
     color: #333;
-    font-weight: 700;
 }
 
 .hero p {
     font-size: 16px;
-    color: #555;
+    color: #666;
     margin-bottom: 30px;
     line-height: 1.6;
 }
@@ -139,86 +79,24 @@ nav {
     text-decoration: none;
     font-weight: 500;
     font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
-    text-align: center;
 }
 
 .order-btn:hover {
-    background-color: #79a179;
+    background-color: #7aa07a;
 }
 
-/* Features Section */
-.features {
-    padding: 80px 0;
-    background-color: #fff;
-    text-align: center;
-}
-
-.features h2 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 36px;
-    margin-bottom: 50px;
-    color: #333;
-    text-align: center;
-}
-
-.features-grid {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.feature-card {
-    flex: 1;
-    background-color: #fff;
-    padding: 30px 20px;
-    text-align: center;
-    border-radius: 5px;
-}
-
-.feature-icon {
-    width: 60px;
-    height: 60px;
-    background-color: #e8f4e8;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 24px;
-}
-
-.feature-card h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #333;
-    font-weight: 600;
-}
-
-.feature-card p {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.6;
-}
-
-/* Gallery/Products Section */
+/* Products Section */
 .products {
     padding: 80px 0;
     background-color: #fff;
 }
 
-.container1 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 .products h2 {
     font-family: 'Dancing Script', cursive;
     font-size: 36px;
+    font-weight: 700;
     margin-bottom: 40px;
     color: #333;
     text-align: center;
@@ -232,15 +110,14 @@ nav {
 
 .product-card {
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
@@ -252,19 +129,19 @@ nav {
 .product-card h3 {
     font-size: 18px;
     color: #333;
-    margin: 15px 15px 5px;
+    margin: 15px;
     font-weight: 500;
 }
 
 .product-card p {
     font-size: 16px;
     color: #88b088;
-    font-weight: 600;
-    margin: 5px 15px 15px;
+    font-weight: 500;
+    margin: 0 15px 15px;
 }
 
 .add-to-cart {
-    display: inline-block;
+    display: block;
     background-color: #88b088;
     color: white;
     padding: 8px 20px;
@@ -272,28 +149,25 @@ nav {
     text-decoration: none;
     font-size: 14px;
     margin: 0 15px 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
 }
 
 .add-to-cart:hover {
-    background-color: #79a179;
+    background-color: #7aa07a;
 }
 
 /* Delivery Section */
 .delivery {
     padding: 80px 0;
-    background-color: #f3f7f0;
-}
-
-.container3 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    background-color: #e8f4ea;
 }
 
 .delivery h2 {
     font-family: 'Dancing Script', cursive;
     font-size: 36px;
+    font-weight: 700;
     margin-bottom: 40px;
     color: #333;
     text-align: center;
@@ -311,7 +185,7 @@ nav {
 
 .delivery-text p {
     font-size: 16px;
-    color: #555;
+    color: #666;
     margin-bottom: 20px;
     line-height: 1.6;
 }
@@ -323,96 +197,20 @@ nav {
 
 .delivery-image img {
     max-width: 100%;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Reviews Section */
-.reviews {
-    padding: 80px 0;
-    background-color: #fff;
-}
-
-.container4 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.reviews h2 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 36px;
-    margin-bottom: 40px;
-    color: #333;
-    text-align: center;
-}
-
-.reviews-grid {
-    display: flex;
-    gap: 30px;
-}
-
-.review-card {
-    flex: 1;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    position: relative;
-}
-
-.review-card p {
-    font-size: 15px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.author {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.author img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.author-info {
-    flex: 1;
-}
-
-.author-info h4 {
-    font-size: 16px;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.stars {
-    color: #88b088;
-    font-size: 14px;
-    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Form Section */
 .form-section {
     padding: 80px 0;
-    background-color: #f3f7f0;
-}
-
-.container5 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    background-color: #fff;
 }
 
 .form-section h2 {
     font-family: 'Dancing Script', cursive;
     font-size: 36px;
+    font-weight: 700;
     margin-bottom: 40px;
     color: #333;
     text-align: center;
@@ -421,8 +219,8 @@ nav {
 .form-container {
     background-color: #fff;
     padding: 40px;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -435,25 +233,22 @@ nav {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #555;
+    color: #333;
 }
 
 .form-group input,
-.form-group textarea,
-.form-group select {
+.form-group textarea {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
     color: #333;
     transition: border-color 0.3s ease;
 }
 
 .form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
+.form-group textarea:focus {
     outline: none;
     border-color: #88b088;
 }
@@ -473,81 +268,24 @@ nav {
     font-weight: 500;
     width: 100%;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
-    background-color: #79a179;
+    background-color: #7aa07a;
 }
-
-/* Footer */
-.footer {
-    background-color: #d8e8d8;
-    padding: 50px 0 20px;
-}
-
-.container6 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-info {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.footer-info h3 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.footer-info p {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 5px;
-}
-
-.footer-copyright {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    font-size: 12px;
-    color: #777;
-}
-
-.scroll-top {
-    color: #88b088;
-    text-decoration: none;
-    margin-left: 10px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.scroll-top:hover {
-    color: #79a179;
-}
-
 /* Media Queries */
 @media (max-width: 992px) {
     .hero .container {
         flex-direction: column;
-        text-align: center;
     }
     
-    .hero-content {
+    .hero-content, .hero-image {
         max-width: 100%;
     }
     
-    .hero-image {
-        max-width: 70%;
-    }
-    
-    .features-grid,
-    .delivery-content,
-    .reviews-grid {
+    .delivery-content {
         flex-direction: column;
     }
     
@@ -557,8 +295,20 @@ nav {
 }
 
 @media (max-width: 768px) {
-    .menu {
-        display: none; /* Would normally add a mobile menu instead */
+    .header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    .nav {
+        margin: 15px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav a {
+        font-size: 14px;
+        padding: 6px 6px;
     }
     
     .product-grid {
@@ -568,11 +318,6 @@ nav {
     .hero h1 {
         font-size: 36px;
     }
-    
-    .feature-card,
-    .review-card {
-        margin-bottom: 20px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -580,17 +325,8 @@ nav {
         grid-template-columns: 1fr;
     }
     
-    .hero-image {
-        max-width: 100%;
-    }
-    
     .hero h1 {
         font-size: 30px;
-    }
-    
-    .feature-card,
-    .review-card {
-        padding: 20px;
     }
     
     .form-container {

@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,18 +7,7 @@
     <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <div class="header">
-        <a href="#" class="logo">FlowerLover</a>
-        <div class="nav">
-            <a href="index.jsp">Trang chủ</a>
-            <a href="features.jsp">Tính năng</a>
-            <a href="gallery.jsp">Bộ sưu tập</a>
-            <a href="delivery.jsp">Giao hàng</a>
-            <a href="reviews.jsp">Đánh giá</a>
-            <a href="form.jsp">Biểu mẫu</a>
-        </div>
-        <button class="contact-btn">Liên hệ</button>
-    </div>
+    <%@ include file="header.jsp" %>
     
     <div class="login-container">
         <h1 class="login-title">Đăng nhập</h1>       
