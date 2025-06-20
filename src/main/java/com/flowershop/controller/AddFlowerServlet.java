@@ -21,13 +21,13 @@ import java.util.UUID;
 
 @WebServlet("/addFlower")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50    // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class AddFlowerServlet extends HttpServlet {
+
     private MongoClient mongoClient;
-    private static final String UPLOAD_DIR = "D:/java/FlowerLover/web/uploads"; // Đường dẫn cụ thể, thay đổi nếu cần
 
     @Override
     public void init() throws ServletException {
@@ -45,10 +45,20 @@ public class AddFlowerServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
+            // 1. Lấy context path của thư mục /uploads nằm trong thư mục webapp
+            String uploadPath = getServletContext().getRealPath("/uploads");
+             System.out.println("Upload path: " + uploadPath);
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // Tạo nếu chưa có
+               
+
+            }
+
             MongoDatabase database = mongoClient.getDatabase("flowerlover");
             MongoCollection<Document> collection = database.getCollection("products");
 
-            // Lấy dữ liệu từ form
+            // 2. Lấy dữ liệu từ form
             String name = request.getParameter("name");
             String priceStr = request.getParameter("price");
             String quantityStr = request.getParameter("quantity");
@@ -59,47 +69,33 @@ public class AddFlowerServlet extends HttpServlet {
             String size = request.getParameter("size");
             String status = request.getParameter("status");
 
-            // Kiểm tra và parse số
             if (name == null || priceStr == null || quantityStr == null || category == null || status == null) {
                 response.getWriter().write("{\"success\": false, \"message\": \"Dữ liệu không đầy đủ!\"}");
                 return;
             }
 
-            double price = 0.0;
-            int quantity = 0;
-            try {
-                price = Double.parseDouble(priceStr);
-                quantity = Integer.parseInt(quantityStr);
-            } catch (NumberFormatException e) {
-                response.getWriter().write("{\"success\": false, \"message\": \"Giá hoặc số lượng không hợp lệ!\"}");
-                return;
-            }
+            double price = Double.parseDouble(priceStr);
+            int quantity = Integer.parseInt(quantityStr);
 
-            // Kiểm tra trùng lặp dựa trên name
-            Document existingFlower = collection.find(new Document("name", name)).first();
-            if (existingFlower != null) {
+            // 3. Kiểm tra trùng name
+            Document existing = collection.find(new Document("name", name)).first();
+            if (existing != null) {
                 response.getWriter().write("{\"success\": false, \"message\": \"Sản phẩm đã tồn tại!\"}");
                 return;
             }
 
-            // Tạo hoặc kiểm tra thư mục uploads
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            // Xử lý upload ảnh
+            // 4. Xử lý file ảnh
             List<String> images = new ArrayList<>();
             for (Part part : request.getParts()) {
-                if (part.getName().equals("images") && part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
-                    String fileName = UUID.randomUUID().toString() + "_" + part.getSubmittedFileName(); // Tạo tên file duy nhất
+                if ("images".equals(part.getName()) && part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
+                    String fileName = UUID.randomUUID() + "_" + part.getSubmittedFileName();
                     File file = new File(uploadDir, fileName);
                     part.write(file.getAbsolutePath());
-                    images.add("/uploads/" + fileName); // Lưu đường dẫn tương đối
+                    images.add("/uploads/" + fileName);
                 }
             }
 
-            // Tạo document mới
+            // 5. Thêm vào MongoDB
             Document newFlower = new Document()
                     .append("name", name)
                     .append("price", price)
@@ -118,8 +114,8 @@ public class AddFlowerServlet extends HttpServlet {
             response.getWriter().write("{\"success\": true}");
 
         } catch (Exception e) {
-            System.err.println("Error in AddFlowerServlet: " + e.getMessage());
-            response.getWriter().write("{\"success\": false, \"message\": \"Failed to add flower: " + e.getMessage() + "\"}");
+            System.err.println("Lỗi: " + e.getMessage());
+            response.getWriter().write("{\"success\": false, \"message\": \"Lỗi khi thêm sản phẩm: " + e.getMessage() + "\"}");
         }
     }
 

@@ -1,5 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script>
+    const contextPath = '<%= request.getContextPath() %>';
+</script>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,15 +22,16 @@
                         .replace(/'/g, '&#039;');
             }
 
-           function escapeJS(str) {
-    if (!str) return '';
-    return str
-        .replace(/\\/g, '\\\\')
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '\\"')
-        .replace(/\n/g, '\\n')
-        .replace(/\r/g, '\\r');
-}
+            function escapeJS(str) {
+                if (!str)
+                    return '';
+                return str
+                        .replace(/\\/g, '\\\\')
+                        .replace(/'/g, "\\'")
+                        .replace(/"/g, '\\"')
+                        .replace(/\n/g, '\\n')
+                        .replace(/\r/g, '\\r');
+            }
 
             function showTab(tabId) {
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -87,61 +92,56 @@
             }
 
             function loadFlowers() {
-                console.log("loadFlowers() called");
                 fetch('/dashboard-data')
                         .then(res => res.json())
                         .then(data => {
-                            if (!data.success || !Array.isArray(data.flowers)) {
-                                alert('Không thể tải danh sách sản phẩm.');
-                                return;
-                            }
-
                             const tbody = document.getElementById('flowersTableBody');
-                            tbody.innerHTML = ''; // Xóa dữ liệu cũ
-                            console.log(data.flowers)
-                            data.flowers.forEach(flower => {
-                                const id = flower._id;
-                                const name = flower.name || '';
-                                const price = flower.price || 0;
-                                const quantity = flower.quantity || 0;
-                                const image = (flower.images && flower.images.length > 0) ? flower.images[0] : '';
-                                const category = flower.category || '';
-                                const description = flower.description || '';
-                                const color = flower.color || '';
-                                const flowerType = flower.flowerType || '';
-                                const size = flower.size || '';
-                                const status = flower.status || '';
-
+                            tbody.innerHTML = '';
+                            data.flowers.forEach(f => {
                                 const row = document.createElement('tr');
-                                row.innerHTML = `
-                                    <td>${id}</td>
-                                    <td>${name}</td>
-                                    <td>${price} VNĐ</td>
-                                    <td>${quantity}</td>
-                                    <td><img src="${image}" alt="${name}" width="50"/></td>
-                                    <td>${category}</td>
-                                    <td>${description}</td>
-                                    <td>${color}</td>
-                                    <td>${flowerType}</td>
-                                    <td>${size}</td>
-                                    <td>${status}</td>
-                                    <td>
-                                       
-                <span class="material-symbols-outlined">edit</span>
-            </button>
-            <button class="delete-btn" onclick="confirmDelete('${id}')">
-                <span class="material-symbols-outlined">delete</span>
-            </button>
-        </td>
-    `;
+
+                                                        row.innerHTML = `
+                                      <td>${'$'}{escapeHtml(f._id)}</td>
+                                      <td>${'$'}{escapeHtml(f.name)}</td>
+                                      <td>${'$'}{f.price} VNĐ</td>
+                                      <td>${'$'}{f.quantity}</td>
+                                      <td><img src="` + contextPath + escapeHtml(f.images[0] || '') + `" width="50"/></td>
+                                      <td>${'$'}{escapeHtml(f.category || '')}</td>
+                                      <td>${'$'}{escapeHtml(f.description || '')}</td>
+                                      <td>${'$'}{escapeHtml(f.color || '')}</td>
+                                      <td>${'$'}{escapeHtml(f.flowerType || '')}</td>
+                                      <td>${'$'}{escapeHtml(f.size || '')}</td>
+                                      <td>${'$'}{escapeHtml(f.status || '')}</td>
+                                      <td class="action-cell"></td>
+                                    `;
+
+
+                                const actionCell = row.querySelector('.action-cell');
+
+                       
+                                const editBtn = document.createElement('button');
+                                editBtn.className = 'edit-btn';
+                                editBtn.innerHTML = '<span class="material-symbols-outlined">edit</span>';
+                                editBtn.addEventListener('click', () => {
+                                    editFlower(
+                                            f._id, f.name, f.price, f.quantity,
+                                            f.images[0] || '', f.category, f.description,
+                                            f.color, f.flowerType, f.size, f.status
+                                            );
+                                });
+
+                             
+                                const delBtn = document.createElement('button');
+                                delBtn.className = 'delete-btn';
+                                delBtn.innerHTML = '<span class="material-symbols-outlined">delete</span>';
+                                delBtn.addEventListener('click', () => confirmDelete(f._id));
+
+                                actionCell.append(editBtn, delBtn);
                                 tbody.appendChild(row);
                             });
-
-
                         })
-                        .catch(err => alert('Lỗi khi tải dữ liệu: ' + err.message));
+                        .catch(err => console.error(err));
             }
-
 
             document.addEventListener('DOMContentLoaded', () => {
                 showTab('product');
