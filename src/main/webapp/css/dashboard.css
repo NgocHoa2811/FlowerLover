@@ -309,3 +309,25 @@ table#flowersTable td:nth-child(5) {
 #flowersTable td {
   color: black;
 }
+.image-gallery {
+  display: flex;
+  overflow-x: auto;
+  max-width: 200px;
+  padding: 4px 0;
+  gap: 6px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  background-color: #f7f7f7;
+}
+
+.image-gallery img {
+  flex-shrink: 0;
+
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+
+
+
