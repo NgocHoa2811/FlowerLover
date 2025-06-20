@@ -5,7 +5,11 @@
     String fullName = (String) session.getAttribute("fullName");
     String phone = (String) session.getAttribute("phone");
     String address = (String) session.getAttribute("address");
-    String initialData = (fullName != null ? fullName : "") + (phone != null ? phone : "") + (address != null ? address : "");
+    String initialData = (fullName != null ? fullName : "") + "|" + (userEmail != null ? userEmail : "") + "|" + (phone != null ? phone : "") + "|" + (address != null ? address : "");
+    if (userEmail == null) {
+        response.getWriter().write("<script>alert('Vui lòng đăng nhập!'); window.location.href='login.jsp';</script>");
+        return;
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -17,12 +21,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .account-settings {
-            max-width: 600px;
+            max-width: 800px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         .profile-image {
             text-align: center;
@@ -63,8 +68,8 @@
             font-size: 14px;
         }
         .buttons {
-            display: none;
             margin-top: 20px;
+            display: none; /* Ẩn mặc định */
         }
         .buttons button {
             padding: 10px 20px;
@@ -81,12 +86,40 @@
             background-color: #ccc;
             color: #333;
         }
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #88b088;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <%@ include file="header.jsp" %>
     <div class="account-settings">
-        <h2>Thiết lập tài khoản</h2>
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+        <h2>Hồ sơ người dùng</h2>
         <div class="profile-image">
             <img src="images/avatar.jpg" alt="Profile Image" id="profileImg">
             <input type="file" id="imageUpload" accept="image/*">
@@ -98,27 +131,96 @@
                 <input type="text" id="fullName" name="fullName" value="<%= fullName != null ? fullName : "" %>" required>
             </div>
             <div class="form-group">
-                <label for="phoneEmail">SĐT/Email</label>
-                <input type="text" id="phoneEmail" name="phoneEmail" value="<%= phone != null ? phone : userEmail %>" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<%= userEmail != null ? userEmail : "" %>" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="phone">Số điện thoại</label>
+                <input type="tel" id="phone" name="phone" value="<%= phone != null ? phone : "" %>" pattern="[0-9]{10}" placeholder="Nhập số điện thoại (10 chữ số)">
             </div>
             <div class="form-group">
                 <label for="address">Địa chỉ</label>
                 <textarea id="address" name="address" required><%= address != null ? address : "" %></textarea>
-            </div>
-            <div class="form-group">
-                <label for="password">Đổi mật khẩu</label>
-                <input type="password" id="password" name="password">
             </div>
             <div class="buttons" id="actionButtons"></div>
         </form>
     </div>
 
     <script>
-        const initialData = "<%= initialData %>";
+        let initialData = "<%= initialData %>";
         const form = document.getElementById('accountForm');
         const buttons = document.getElementById('actionButtons');
         const profileImg = document.getElementById('profileImg');
         const imageUpload = document.getElementById('imageUpload');
+        const contextPath = '<%= request.getContextPath() %>';
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        function fetchUserData(email) {
+            showLoading();
+            fetch(contextPath + '/GetUserServlet?email=' + encodeURIComponent(email), {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch: ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    console.error('Error fetching user data:', data.error);
+                    form.fullName.value = "<%= fullName != null ? fullName : "" %>";
+                    form.phone.value = "<%= phone != null ? phone : "" %>";
+                    form.address.value = "<%= address != null ? address : "" %>";
+                    profileImg.src = contextPath + '/images/avatar.jpg';
+                    if (window.updateUserImage) window.updateUserImage(contextPath + '/images/avatar.jpg');
+                } else {
+                    form.fullName.value = data.fullName || '';
+                    form.phone.value = data.phone || '';
+                    form.address.value = data.address || '';
+                    const imageSrc = data.profileImage && !data.profileImage.startsWith("data:image") 
+                        ? 'data:image/jpeg;base64,' + data.profileImage 
+                        : contextPath + '/images/avatar.jpg';
+                    profileImg.src = imageSrc;
+                    if (window.updateUserImage) window.updateUserImage(imageSrc);
+                    // Cập nhật initialData sau khi fetch dữ liệu mới
+                    initialData = form.fullName.value + "|" + form.email.value + "|" + form.phone.value + "|" + form.address.value;
+                    checkChanges();
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                form.fullName.value = "<%= fullName != null ? fullName : "" %>";
+                form.phone.value = "<%= phone != null ? phone : "" %>";
+                form.address.value = "<%= address != null ? address : "" %>";
+                profileImg.src = contextPath + '/images/avatar.jpg';
+                if (window.updateUserImage) window.updateUserImage(contextPath + '/images/avatar.jpg');
+                checkChanges();
+            })
+            .finally(() => {
+                hideLoading();
+            });
+        }
+
+        window.addEventListener('load', () => {
+            const email = form.email.value;
+            if (email) {
+                fetchUserData(email);
+            } else {
+                console.warn('No email found in form, using session data');
+                profileImg.src = contextPath + '/images/avatar.jpg';
+                if (window.updateUserImage) window.updateUserImage(contextPath + '/images/avatar.jpg');
+                checkChanges();
+                hideLoading();
+            }
+        });
 
         imageUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -126,6 +228,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     profileImg.src = e.target.result;
+                    if (window.updateUserImage) window.updateUserImage(e.target.result);
                 };
                 reader.readAsDataURL(file);
                 checkChanges();
@@ -133,7 +236,7 @@
         });
 
         function checkChanges() {
-            const currentData = form.fullName.value + form.phoneEmail.value + form.address.value + (form.password.value ? "changed" : "");
+            const currentData = form.fullName.value + "|" + form.email.value + "|" + form.phone.value + "|" + form.address.value;
             if (currentData !== initialData || imageUpload.files.length > 0) {
                 buttons.style.display = 'block';
                 buttons.innerHTML = '<button type="button" class="save-btn" onclick="saveChanges()">Lưu thay đổi</button><button type="button" class="cancel-btn" onclick="resetForm()">Hủy</button>';
@@ -143,55 +246,46 @@
         }
 
         function saveChanges() {
+            showLoading();
             const fullName = form.fullName.value;
-            const phoneEmail = form.phoneEmail.value;
+            const email = form.email.value;
+            const phone = form.phone.value;
             const address = form.address.value;
-            const password = form.password.value;
+            const profileImage = imageUpload.files.length > 0 ? imageUpload.files[0] : null;
 
-            // Cập nhật session (chỉ trong bộ nhớ trình duyệt)
-            <% if (userEmail != null) { %>
-                sessionStorage.setItem('fullName', fullName);
-                sessionStorage.setItem('phone', phoneEmail);
-                sessionStorage.setItem('address', address);
-                if (password) {
-                    sessionStorage.setItem('password', password); // Lưu ý: không an toàn, chỉ demo
-                }
-                sessionStorage.setItem('initialData', fullName + phoneEmail + address);
-            <% } %>
+            const formData = new FormData();
+            formData.append('fullName', fullName);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('address', address);
+            if (profileImage) formData.append('profileImage', profileImage);
 
-            // Lưu ảnh nếu có
-            if (imageUpload.files.length > 0) {
-                const file = imageUpload.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    sessionStorage.setItem('profileImage', e.target.result);
-                    profileImg.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-
-            alert("Thông tin đã được lưu trong session!");
-            resetForm();
+            fetch(contextPath + '/UpdateUserServlet', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Server error: ' + response.status);
+                return response.text();
+            })
+            .then(data => {
+                alert(data);
+                fetchUserData(email); // Cập nhật lại dữ liệu sau khi lưu
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Lỗi: ' + error.message);
+            })
+            .finally(() => {
+                hideLoading();
+            });
         }
 
         function resetForm() {
-            form.reset();
-            profileImg.src = 'images/avatar.jpg';
-            imageUpload.value = '';
-            buttons.style.display = 'none';
-            checkChanges();
-            // Khôi phục dữ liệu ban đầu từ sessionStorage
-            const storedFullName = sessionStorage.getItem('fullName') || "<%= fullName != null ? fullName : "" %>";
-            const storedPhone = sessionStorage.getItem('phone') || "<%= phone != null ? phone : userEmail %>";
-            const storedAddress = sessionStorage.getItem('address') || "<%= address != null ? address : "" %>";
-            const storedImage = sessionStorage.getItem('profileImage') || 'images/user-icon.jpg';
-            form.fullName.value = storedFullName;
-            form.phoneEmail.value = storedPhone;
-            form.address.value = storedAddress;
-            profileImg.src = storedImage;
+            fetchUserData(form.email.value); // Reset về dữ liệu gốc
         }
 
-        // Khởi tạo kiểm tra lần đầu
+        // Kiểm tra thay đổi ban đầu
         checkChanges();
     </script>
     <%@ include file="footer.jsp" %>

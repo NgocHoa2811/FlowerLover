@@ -1,10 +1,13 @@
-<%-- 
-    Document   : delivery
-    Created on : Apr 22, 2025, 8:30:11 PM
-    Author     : PC
---%>
 
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="com.mongodb.client.MongoClients"%>
+<%@page import="com.mongodb.client.MongoClient"%>
+<%@page import="com.mongodb.client.MongoDatabase"%>
+<%@page import="com.mongodb.client.MongoCollection"%>
+<%@page import="com.mongodb.client.model.Filters"%>
+<%@page import="org.bson.Document"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +35,7 @@
     </section>
 
     <!-- Delivery Info Section -->
+    <% if (session.getAttribute("user") == null) { %>
     <section class="delivery-info">
         <div class="container">
             <h2>Thông tin giao hàng</h2>
@@ -54,37 +58,95 @@
             </div>
         </div>
     </section>
+    <% } %>
 
     <!-- Delivery Process Section -->
     <section class="delivery-process">
         <div class="container">
             <h2>Quy trình giao hàng</h2>
-            <div class="process-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Đặt hàng</h3>
-                    <p>Bạn đặt hàng qua website hoặc gọi điện trực tiếp cho chúng tôi.</p>
+            <% if (session.getAttribute("user") != null) { 
+                MongoClient mongoClient = null;
+                try {
+                    mongoClient = MongoClients.create("mongodb://localhost:27017");
+                    MongoDatabase database = mongoClient.getDatabase("flowerlover");
+                    MongoCollection<Document> users = database.getCollection("users");
+                    MongoCollection<Document> orders = database.getCollection("orders");
+                    String userId = (String) session.getAttribute("user");
+                    if (userId == null) {
+                        out.println("<div class='no-orders'><p>Không tìm thấy thông tin người dùng.</p></div>");
+                    } else {
+                        Document user = users.find(Filters.eq("_id", userId)).first();
+                        long orderCount = 0;
+                        if (user != null) {
+                            orderCount = orders.countDocuments(Filters.eq("userId", user.getString("userId")));
+                        }
+                        if (orderCount == 0) { %>
+                            <div class="no-orders">
+                                <p>Bạn không có đơn hàng nào.</p>
+                            </div>
+                        <% } else { 
+                            // Example logic: Assume the latest order status determines the step
+                            Document latestOrder = orders.find(Filters.eq("userId", user.getString("userId")))
+                                    .sort(Filters.eq("orderDate", -1)).first();
+                            String status = latestOrder != null ? latestOrder.getString("status") : "pending";
+                            String step1Class = "completed";
+                            String step2Class = status.equals("confirmed") || status.equals("preparing") || status.equals("delivered") ? "completed" : "";
+                            String step3Class = status.equals("preparing") || status.equals("delivered") ? "active" : "";
+                            String step4Class = status.equals("delivered") ? "completed" : ""; %>
+                            <div class="status-bar">
+                                <div class="step <%= step1Class %>">
+                                    <div class="step-circle">✔</div>
+                                    <p>Đặt hàng</p>
+                                </div>
+                                <div class="step <%= step2Class %>">
+                                    <div class="step-circle">✔</div>
+                                    <p>Xác nhận</p>
+                                </div>
+                                <div class="step <%= step3Class %>">
+                                    <div class="step-circle">●</div>
+                                    <p>Chuẩn bị</p>
+                                </div>
+                                <div class="step <%= step4Class %>">
+                                    <div class="step-circle">○</div>
+                                    <p>Giao hàng</p>
+                                </div>
+                            </div>
+                        <% }
+                    }
+                } catch (Exception e) {
+                    out.println("<div class='no-orders'><p>Lỗi kết nối database: " + e.getMessage() + "</p></div>");
+                } finally {
+                    if (mongoClient != null) mongoClient.close();
+                }
+            } else { %>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Đặt hàng</h3>
+                        <p>Bạn đặt hàng qua website hoặc gọi điện trực tiếp cho chúng tôi.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Xác nhận</h3>
+                        <p>Chúng tôi sẽ liên hệ để xác nhận đơn hàng và thời gian giao hàng.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Chuẩn bị</h3>
+                        <p>Đội ngũ florist của chúng tôi chuẩn bị bó hoa tươi theo yêu cầu.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Giao hàng</h3>
+                        <p>Nhân viên giao hàng sẽ đưa hoa đến địa chỉ của bạn đúng hẹn.</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Xác nhận</h3>
-                    <p>Chúng tôi sẽ liên hệ để xác nhận đơn hàng và thời gian giao hàng.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Chuẩn bị</h3>
-                    <p>Đội ngũ florist của chúng tôi chuẩn bị bó hoa tươi theo yêu cầu.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Giao hàng</h3>
-                    <p>Nhân viên giao hàng sẽ đưa hoa đến địa chỉ của bạn đúng hẹn.</p>
-                </div>
-            </div>
+            <% } %>
         </div>
     </section>
 
     <!-- Delivery FAQs Section -->
+    <% if (session.getAttribute("user") == null) { %>
     <section class="delivery-faqs">
         <div class="container">
             <h2>Câu hỏi thường gặp</h2>
@@ -108,42 +170,11 @@
             </div>
         </div>
     </section>
+    <% } %>
 
-    <!-- Delivery Contact Section -->
-    <section class="delivery-contact" id="contact">
-        <div class="container">
-            <h2>Liên hệ về giao hàng</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <p>Nếu bạn có thắc mắc về dịch vụ giao hàng của chúng tôi, vui lòng liên hệ:</p>
-                    <p><strong>Hotline:</strong> (028) 1234-5678</p>
-                    <p><strong>Email:</strong> delivery@flowerlover.com</p>
-                    <p><strong>Giờ làm việc:</strong> 8:00 - 20:00 (Thứ 2 - Chủ Nhật)</p>
-                </div>
-                <div class="contact-form">
-                    <form action="#">
-                        <div class="form-group">
-                            <label for="name">Họ và tên</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Chủ đề</label>
-                            <input type="text" id="subject" name="subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Nội dung</label>
-                            <textarea id="message" name="message" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">Gửi yêu cầu</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+
+
+    <!-- Footer -->
     <%@ include file="footer.jsp" %>
 </body>
 </html>

@@ -17,7 +17,7 @@
     <body>
         <%@ include file="header.jsp" %>
         <h1>Giỏ hàng của bạn hiện không có sản phẩm</h1>
-        <%@ include file="footer.jsp" %>
+
 
     </body>
 </html>

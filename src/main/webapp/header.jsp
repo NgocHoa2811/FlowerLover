@@ -18,11 +18,11 @@
             <a href="cart.jsp" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
             <% if (session.getAttribute("user") != null) { %>
                 <div class="user-menu">
-                    <a href="#" class="user-icon"><img src="images/avatar.jpg" alt="User Icon" class="user-image"></a>
+                    <a href="#" class="user-icon"><img id="userImage" src="images/avatar.jpg" alt="User Icon" class="user-image"></a>
                     <div class="dropdown-menu">
                         <a href="favorite.jsp">Yêu thích</a>
                         <a href="orders.jsp">Đơn hàng</a>
-                        <a href="account-settings.jsp">Thiết lập tài khoản</a>
+                        <a href="account-settings.jsp">Hồ sơ người dùng</a>
                         <a href="LogoutServlet">Đăng xuất</a>
                     </div>
                 </div>
@@ -40,10 +40,19 @@
 </div>
 
 <script>
+    // NEW: Define global updateUserImage function
+    window.updateUserImage = function(imageSrc) {
+        const userImage = document.getElementById('userImage');
+        if (userImage) {
+            userImage.src = imageSrc || '<%= request.getContextPath() %>/images/avatar.jpg';
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
         const userIcon = document.querySelector('.user-icon');
         const dropdownMenu = document.querySelector('.dropdown-menu');
 
+        // Existing dropdown logic
         userIcon.addEventListener('mouseover', function() {
             dropdownMenu.style.display = 'block';
         });
@@ -59,6 +68,32 @@
         dropdownMenu.addEventListener('mouseout', function() {
             this.style.display = 'none';
         });
+
+        // NEW: Load user image on page load
+        const email = "<%= session.getAttribute("user") != null ? session.getAttribute("user") : "" %>";
+        const contextPath = '<%= request.getContextPath() %>';
+        if (email) {
+            fetch(contextPath + '/GetUserServlet?email=' + encodeURIComponent(email), {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch user image');
+                return response.json();
+            })
+            .then(data => {
+                if (data.profileImage && !data.profileImage.startsWith("data:image")) {
+                    const imageSrc = 'data:image/jpeg;base64,' + data.profileImage;
+                    updateUserImage(imageSrc);
+                } else {
+                    updateUserImage(contextPath + '/images/avatar.jpg');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user image:', error);
+                updateUserImage(contextPath + '/images/avatar.jpg');
+            });
+        }
     });
 </script>
 
