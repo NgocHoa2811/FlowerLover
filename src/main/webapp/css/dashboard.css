@@ -7,7 +7,45 @@ body {
     padding: 0;
     color: #333333;
     height: 100vh;
-    overflow: hidden;
+}
+
+/* Loại bỏ overlay vì form không còn là popup */
+.overlay {
+    display: none !important; /* Ẩn hoàn toàn overlay */
+}
+
+/* Form Thêm mới cố định bên dưới bảng, khớp chiều rộng với bảng */
+.add-form {
+    display: none;
+    background-color: #ffffff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-form.active {
+    display: block; /* Hiển thị khi active */
+}
+
+/* Form Chỉnh sửa vẫn giữ popup (nếu cần thay đổi, thông báo mình nhé) */
+.edit-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+}
+
+.edit-form.active {
+    display: block;
 }
 
 /* Thêm style cho header */
@@ -17,14 +55,13 @@ body {
     padding: 10px 20px;
     width: 100%;
     margin-bottom: 20px;
+    background-color: #c8e6c9;
 }
-
-
 
 .logo img {
     width: 30px;
     height: 30px;
-    background-color: #000; /* Thay bằng hình ảnh thực tế */
+    background-color: #000;
     margin-right: 10px;
     border-radius: 50%;
 }
@@ -147,19 +184,7 @@ td img {
     border-radius: 5px;
 }
 
-.add-form {
-    display: none;
-    background-color: #ffffff;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.add-form.active {
-    display: block;
-}
-
+/* Điều chỉnh các phần tử bên trong form */
 .form-group {
     margin-bottom: 15px;
 }
@@ -179,11 +204,12 @@ td img {
 
 .form-actions {
     margin-top: 20px;
+    text-align: right;
 }
 
 .form-actions button {
     padding: 10px 20px;
-    margin-right: 10px;
+    margin-left: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -207,52 +233,79 @@ td img {
     background-color: #da190b;
 }
 
-.add-form {
-    display: none;
-    background-color: #ffffff;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.add-form.active {
-    display: block;
-}
-.form-group {
-    margin-bottom: 15px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #2e7d32;
-}
-.form-group input, .form-group select, .form-group textarea {
+table#flowersTable {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #c8e6c9;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    visibility: visible;
+}
+
+table#flowersTable td, table#flowersTable th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #c8e6c9;
+    visibility: visible;
+}
+
+table#flowersTable img {
+    max-width: 50px;
+    height: auto;
     border-radius: 5px;
+    display: block;
 }
-.form-actions {
-    margin-top: 20px;
-}
-.form-actions button {
-    padding: 10px 20px;
-    margin-right: 10px;
+
+.edit-btn, .delete-btn {
+    background: none;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
+    margin-right: 10px;
+    font-size: 18px;
 }
-.form-actions .save-btn {
-    background-color: #4caf50;
-    color: white;
+
+.edit-btn span {
+    color: #4CAF50;
 }
-.form-actions .save-btn:hover {
-    background-color: #45a049;
+
+.delete-btn span {
+    color: #f44336;
 }
-.form-actions .cancel-btn {
-    background-color: #f44336;
-    color: white;
+
+/* Điều chỉnh chiều rộng cột Tên sản phẩm */
+table#flowersTable th:nth-child(2),
+table#flowersTable td:nth-child(2) {
+    min-width: 250px; /* Tăng chiều rộng cho cột Tên sản phẩm */
 }
-.form-actions .cancel-btn:hover {
-    background-color: #da190b;
+
+/* Thêm vào cuối file dashboard.css */
+table#flowersTable th,
+table#flowersTable td {
+    min-width: 100px;
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+table#flowersTable th:nth-child(1),
+table#flowersTable td:nth-child(1) {
+    min-width: 120px;
+}
+
+table#flowersTable th:nth-child(5),
+table#flowersTable td:nth-child(5) {
+    min-width: 80px;
+}
+
+/* Add table-container for horizontal scrolling */
+.table-container {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.table-container::-webkit-scrollbar {
+    display: none;
+}
+#flowersTable td {
+  color: black;
 }
