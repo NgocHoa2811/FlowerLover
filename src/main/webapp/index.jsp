@@ -29,7 +29,7 @@
             <div class="hero-content">
                 <h1>Hoa tươi với tình yêu — Giao hàng nhanh khắp Hà Nội</h1>
                 <p>Hạnh phúc trong từng bó hoa. Mang đến tình yêu và sự ấm áp tận cửa nhà bạn.</p>
-                <a href="gallery.jsp" class="order-btn">Đặt hàng ngay</a>
+                <a href="register.jsp" class="order-btn">Đặt hàng ngay</a>
             </div>
             <div class="hero-image">
                 <img src="images/baner.jpg" alt="Hoa cúc trắng">
@@ -60,34 +60,6 @@
             </div>
         </div>
     </section>
-
-    <section class="form-section" id="form">
-        <div class="container5">
-            <h2>Biểu mẫu đặt hoa</h2>
-            <div class="form-container">
-                <form action="OrderServlet" method="POST">
-                    <div class="form-group">
-                        <label for="name">Họ và tên</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Địa chỉ giao hàng</label>
-                        <input type="text" id="address" name="address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Lời nhắn (nếu có)</label>
-                        <textarea id="message" name="message"></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Đặt hàng</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
 <%@ include file="footer.jsp" %>
 </body>
 </html>
