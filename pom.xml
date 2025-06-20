@@ -10,6 +10,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
@@ -97,6 +99,12 @@
             <groupId>app.lexilabs.basic</groupId>
             <artifactId>basic-logging-jvm</artifactId>
             <version>0.2.6</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.firework.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1.0</version>
             <type>jar</type>
         </dependency>
     </dependencies>
