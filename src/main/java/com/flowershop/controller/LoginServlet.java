@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                 BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPassword.toCharArray());
                 if (result.verified) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("user", user.getString("email"));
+                    session.setAttribute("user", user.getObjectId("_id").toHexString());
                     session.setAttribute("role", user.getString("role"));
 
                     // Debug: In tham số redirect

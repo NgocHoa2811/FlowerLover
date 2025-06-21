@@ -15,9 +15,11 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.nio.file.Path;
 
 @WebServlet("/addFlower")
 @MultipartConfig(
@@ -26,6 +28,13 @@ import java.util.UUID;
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class AddFlowerServlet extends HttpServlet {
+
+    private String escapeJson(String str) {
+        if (str == null) {
+            return "";
+        }
+        return str.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
+    }
 
     private MongoClient mongoClient;
 
@@ -46,13 +55,17 @@ public class AddFlowerServlet extends HttpServlet {
 
         try {
             // 1. Lấy context path của thư mục /uploads nằm trong thư mục webapp
-            String uploadPath = getServletContext().getRealPath("/uploads");
-             System.out.println("Upload path: " + uploadPath);
+            String uploadPath = getServletContext().getRealPath("/") + "uploads";
+            if (uploadPath == null) {
+                uploadPath = new File("webapp/uploads").getAbsolutePath(); // Fallback nếu null
+                System.out.println("Fallback upload path: " + uploadPath);
+            } else {
+                System.out.println("Upload path: " + uploadPath);
+            }
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // Tạo nếu chưa có
-               
-
+                boolean created = uploadDir.mkdirs();
+                System.out.println("Created upload directory: " + uploadPath + ", Success: " + created);
             }
 
             MongoDatabase database = mongoClient.getDatabase("flowerlover");
@@ -86,13 +99,36 @@ public class AddFlowerServlet extends HttpServlet {
 
             // 4. Xử lý file ảnh
             List<String> images = new ArrayList<>();
+            System.out.println("Number of parts: " + request.getParts().size());
             for (Part part : request.getParts()) {
+                System.out.println("Part name: " + part.getName() + ", Submitted file name: " + part.getSubmittedFileName());
                 if ("images".equals(part.getName()) && part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
                     String fileName = UUID.randomUUID() + "_" + part.getSubmittedFileName();
-                    File file = new File(uploadDir, fileName);
-                    part.write(file.getAbsolutePath());
+
+                    // Đường dẫn trong thư mục target để app chạy (runtime)
+                    File buildPath = new File(getServletContext().getRealPath("/uploads"), fileName);
+                    part.write(buildPath.getAbsolutePath());
+
+                    // Đường dẫn trong src để giữ lại ảnh sau mỗi lần build (dev)
+                    File webAppUploads = new File("src/main/webapp/uploads");
+                    if (!webAppUploads.exists()) {
+                        webAppUploads.mkdirs();
+                    }
+                    File webPath = new File(webAppUploads, fileName);
+
+                    // Sao chép từ target sang src
+                    Files.copy(buildPath.toPath(), webPath.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                    System.out.println("Ảnh đã được lưu tại: " + buildPath.getAbsolutePath() + " và " + webPath.getAbsolutePath());
+
+                    // Thêm vào danh sách ảnh để lưu vào DB
                     images.add("/uploads/" + fileName);
                 }
+
+            }
+
+            if (images.isEmpty()) {
+                System.out.println("No images were processed.");
             }
 
             // 5. Thêm vào MongoDB
@@ -115,7 +151,8 @@ public class AddFlowerServlet extends HttpServlet {
 
         } catch (Exception e) {
             System.err.println("Lỗi: " + e.getMessage());
-            response.getWriter().write("{\"success\": false, \"message\": \"Lỗi khi thêm sản phẩm: " + e.getMessage() + "\"}");
+            String safeMessage = escapeJson("Lỗi khi thêm sản phẩm: " + e.getMessage());
+            response.getWriter().write("{\"success\": false, \"message\": \"" + safeMessage + "\"}");
         }
     }
 
