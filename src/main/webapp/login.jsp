@@ -20,6 +20,7 @@
         <% } %>
         
         <form action="<%=request.getContextPath()%>/LoginServlet" method="post">
+            <input type="hidden" name="redirect" value="<%= request.getParameter("redirect") != null ? request.getParameter("redirect") : "" %>">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
