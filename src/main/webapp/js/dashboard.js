@@ -107,7 +107,14 @@ function loadFlowers() {
                         <td>${f.quantity}</td>
                         <td><div class="image-gallery">${imageHtml}</div></td>
                         <td>${escapeHtml(f.category || '')}</td>
-                        <td>${escapeHtml(f.description || '')}</td>
+                       <td>
+                            <div class="description-wrapper">
+                              <div class="description-preview">${escapeHtml(f.description || '')}</div>
+                              <div class="description-popup">${f.description || ''}</div> <!-- Không escape -->
+                            </div>
+                          </td>
+
+
                         <td>${escapeHtml(f.color || '')}</td>
                         <td>${escapeHtml(f.flowerType || '')}</td>
                         <td>${escapeHtml(f.size || '')}</td>
