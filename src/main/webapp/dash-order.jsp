@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;700" rel="stylesheet" />
     <title>Quản lý đơn hàng</title>
 </head>
+<script src="js/dash-order.js"></script>
+
 <body>
     <div class="sidebar">
         <div class="logo"><img src="https://i.pinimg.com/736x/57/1d/61/571d612946ec0c51d55d9b7b6700afc2.jpg" alt="alt"/></div>
