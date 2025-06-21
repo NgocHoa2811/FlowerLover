@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import java.io.File;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -46,8 +47,9 @@ public class UpdateFlowerServlet extends HttpServlet {
             for (Part part : request.getParts()) {
                 if (part.getName().equals("images") && part.getSize() > 0) {
                     String fileName = part.getSubmittedFileName();
-                    String uploadPath = getServletContext().getRealPath("/uploads/") + fileName;
+                    String uploadPath = getServletContext().getRealPath("/uploads/") + File.separator + fileName;
                     part.write(uploadPath);
+
                     imageUrls.add("/uploads/" + fileName);
                 }
             }
