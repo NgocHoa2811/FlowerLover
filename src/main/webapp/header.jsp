@@ -10,7 +10,7 @@
     <div class="nav">
         <div class="nav-links">
             <a href="index.jsp" class="<%= request.getRequestURI().endsWith("index.jsp") ? "active" : "" %>">Trang chủ</a>
-            <a href="gallery.jsp" class="<%= request.getRequestURI().endsWith("gallery.jsp") ? "active" : "" %>">Mua hàng</a>
+            <a href="shopping.jsp" class="<%= request.getRequestURI().endsWith("shopping.jsp") ? "active" : "" %>">Mua hàng</a>
             <a href="custom-order.jsp" class="<%= request.getRequestURI().endsWith("custom-order.jsp") ? "active" : "" %>">Đặt riêng</a>
             <a href="delivery.jsp" class="<%= request.getRequestURI().endsWith("delivery.jsp") ? "active" : "" %>">Giao hàng</a>
         </div>
@@ -67,8 +67,8 @@
         display: flex;
         align-items: center;
         padding: 15px 50px;
-        background-color: #c8e6c9;
-        border-bottom: 1px solid #ddd;
+        background-color: #22392C;
+        border-bottom: 1px solid #22392C;
         position: sticky;
         top: 0;
         z-index: 1000;
@@ -78,7 +78,7 @@
         font-family: 'Dancing Script', cursive;
         font-size: 28px;
         font-weight: 700;
-        color: #333;
+        color: #FEF4EB;
         text-decoration: none;
     }
 
@@ -104,7 +104,7 @@
 
     .nav a {
         text-decoration: none;
-        color: #333;
+        color: #FEF4EB;
         font-weight: 500;
         padding: 8px 6px;
         transition: color 0.3s ease;
@@ -121,7 +121,7 @@
 
     .cart-icon {
         padding: 8px;
-        color: #333;
+        color: #FEF4EB;
         text-decoration: none;
         font-size: 18px;
     }
@@ -160,7 +160,7 @@
     }
 
     .dropdown-menu a {
-        color: #333;
+        color: #171616;
         padding: 12px 16px;
         text-decoration: none;
         display: block;

@@ -22,9 +22,9 @@
 
 <style>
     .footer {
-        background-color: #c8e6c9;
+        background-color: #22392C;
         padding: 20px 0;
-        color: #333;
+        color: #FEF4EB;
         text-align: left;
         margin-top: 40px;
     }

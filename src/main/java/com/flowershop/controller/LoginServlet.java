@@ -35,9 +35,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("LoginServlet: doPost called");
+        System.out.println("LoginServlet: doPost called with request: " + request.getRequestURI());
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        System.out.println("Received email: " + email + ", password: " + password);
 
         try {
             MongoDatabase database = mongoClient.getDatabase("flowerlover");
@@ -55,8 +56,20 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user", user.getString("email"));
                     session.setAttribute("role", user.getString("role"));
 
-                    // Chuyển hướng dựa trên vai trò
+                    // Debug: In tham số redirect
+                    String redirect = request.getParameter("redirect");
+                    System.out.println("Redirect parameter: " + redirect);
+
+                    // Ưu tiên redirect nếu có
+                    if (redirect != null && !redirect.isEmpty()) {
+                        System.out.println("Redirecting to: " + request.getContextPath() + "/" + redirect);
+                        response.sendRedirect(request.getContextPath() + "/" + redirect);
+                        return; // Đảm bảo thoát ngay sau redirect
+                    }
+
+                    // Chỉ chuyển hướng dựa trên vai trò nếu không có redirect
                     String role = user.getString("role");
+                    System.out.println("Role: " + role);
                     if ("admin".equals(role)) {
                         response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
                     } else {
@@ -71,6 +84,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (Exception e) {
+            System.out.println("Exception during login: " + e.getMessage());
             request.setAttribute("errorMessage", "Đã xảy ra lỗi khi đăng nhập: " + e.getMessage());
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

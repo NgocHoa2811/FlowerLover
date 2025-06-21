@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Bộ sưu tập - Hoa yêu thương</title>
-    <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/shopping.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
 </head>
