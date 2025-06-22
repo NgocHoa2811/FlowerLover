@@ -31,10 +31,10 @@
                 <!-- Product Header - Tách tên và giá -->
                 <div class="product-header">
                     <div class="product-name">
-                        <h1 id="name" class="product-title">ngọccc hoaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+                        <h1 id="name" class="product-title">sddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</h1>
                     </div>
                     <div class="product-price-container">
-                        <div id="price" class="product-price">1000000</div>
+                        <div id="price" class="product-price">188</div>
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
         <div id="product-metadata" class="product-metadata">
             <div class="meta-item">
                 <div class="meta-label">Phân loại:</div>
-                <div id="category" class="meta-value"> màu hồng</div>
+                <div id="category" class="meta-value"></div>
             </div>
             <div class="meta-item">
                 <div class="meta-label">Màu sắc:</div>
@@ -90,14 +90,14 @@
             </div>
             <div class="meta-item">
                 <div class="meta-label">Trạng thái:</div>
-                <span id="status" class="status-badge">còn hàngggggg</span>
+                <span id="status" class="status-badge"></span>
             </div>
         </div>
 
         <!-- Product Description -->
         <div class="product-description">
             <h2 class="description-title">Mô tả sản phẩm</h2>
-            <div id="description" class="description-content">ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc </div>
+            <div id="description" class="description-content"> cccccvvvvvvvvvvvvvvvvvaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddddddddddddddddddddddccccccccccccccccccccccccccccccc</div>
         </div>
     </div>
 
