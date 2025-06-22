@@ -1,5 +1,7 @@
 package com.flowershop.util;
 
+
+import io.github.cdimascio.dotenv.Dotenv;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,7 +13,8 @@ import org.json.JSONObject;
 
 public class ChatbotOpenAI {
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-    private static final String API_KEY = "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";
+    private static final Dotenv dotenv = Dotenv.load(); 
+    private static final String API_KEY = dotenv.get("OPENAI_API_KEY");
 
     public static void main(String[] args) {
         String userMessage = "Xin chào, bạn khỏe không?";
