@@ -1,10 +1,4 @@
-<%-- 
-    Document   : login
-    Created on : Mar 26, 2025, 1:50:25 PM
-    Author     : PC
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,28 +7,20 @@
     <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <div class="header">
-       <a href="#" class="logo">FlowerLover</a>
-        <div class="nav">
-            <a href="index.jsp">Trang chủ</a>
-            <a href="features.jsp">Tính năng</a>
-            <a href="gallery.jsp">Bộ sưu tập</a>
-            <a href="delivery.jsp">Giao hàng</a>
-            <a href="reviews.jsp">Đánh giá</a>
-            <a href="form.jsp">Biểu mẫu</a>
-        </div>
-        <button class="contact-btn">Liên hệ</button>
-    </div>
+    <%@ include file="header.jsp" %>
     
     <div class="login-container">
         <h1 class="login-title">Đăng nhập</h1>       
-        <% if(request.getAttribute("errorMessage") != null) { %>
+        <% if (request.getParameter("register") != null && request.getParameter("register").equals("success")) { %>
+            <div class="error-message" style="color: green;">Đăng ký thành công! Vui lòng đăng nhập.</div>
+        <% } else if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-message">
                 <%= request.getAttribute("errorMessage") %>
             </div>
         <% } %>
         
-        <form action="LoginServlet" method="post">
+        <form action="<%=request.getContextPath()%>/LoginServlet" method="post">
+            <input type="hidden" name="redirect" value="<%= request.getParameter("redirect") != null ? request.getParameter("redirect") : "" %>">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>

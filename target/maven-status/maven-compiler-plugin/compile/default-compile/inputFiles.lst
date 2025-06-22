@@ -1,16 +1,45 @@
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\DatabaseConnection.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\OrderServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\flowershop\servlet\AdminProductServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\UserDAO.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\AddToCartServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\LoginServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\TestMySql.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\flowershop\model\Product.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\flowershop\servlet\SalesStatisticsServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\flowershop\dao\ProductDAO.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\mycompany\maven1\JakartaRestConfiguration.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\RegisterServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\mycompany\maven1\resources\JakartaEE10Resource.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\flowershop\servlet\RedirectServlet.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\com\flowershop\dao\Product.java
-D:\HK2_24-25\THIET KE PHAN MEM UNG DUNG WEB\2274820116_BuiThiNgocHoa\src\main\java\DisplayAcountTable.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\FavoriteServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateCartServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateOrderStatusServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\model\Product.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\RemoveFromCartServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateUserServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\mycompany\maven1\JakartaRestConfiguration.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\DisplayAcountTable.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\GetFavoritesServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateCustomOrderStatusServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateOrderServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\LogoutServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\GenerateInvoiceServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\config\Database.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\GetCartServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\servlet\SalesStatisticsServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\OrderServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\LoginServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\DashboardServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\ProductUserServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\dao\ProductDAO.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\servlet\RedirectServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\AddFlowerServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\util\ChatbotOpenAI.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\AddToCartServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\TestMySql.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\CustomOrdersDataServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\dao\Product.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\GetUserServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\util\MongoUtil.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\OrderHistoryServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\mycompany\maven1\resources\JakartaEE10Resource.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\DashboardOrderServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\GenerateCustomInvoiceServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\model\Flower.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\repository\FlowerRepository.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\DeleteFlowerServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateCustomOrderServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\AddToCartServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\CustomOrderServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\UpdateFlowerServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\OrderServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\model\Document.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\ChatbotServlet.java
+C:\Users\hp\Documents\Tailieu\baitapjava\FlowerLover\src\main\java\com\flowershop\controller\RegisterServlet.java

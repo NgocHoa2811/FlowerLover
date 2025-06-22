@@ -1,2 +1,3 @@
-/target/
-*.config.properties
+# Bỏ qua file cấu hình chứa API key
+src/main/java/com/flowershop/util/ChatbotOpenAI.java
+src/main/resources/config.properties
