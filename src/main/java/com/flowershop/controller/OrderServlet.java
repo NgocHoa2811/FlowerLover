@@ -57,20 +57,20 @@ public class OrderServlet extends HttpServlet {
             MongoDatabase database = mongoClient.getDatabase("flowerlover");
             MongoCollection<Document> orders = database.getCollection("orders");
 
-            Document order = new Document("orderId", new ObjectId().toHexString())
-                    .append("userId", userId)
-                    .append("productId", new ObjectId(productId)) // nếu productId là ObjectId
-                    .append("productNames", productName)
-                    .append("customerName", customerName)
-                    .append("phone", phone)
-                    .append("email", email)
-                    .append("address", address)
-                    .append("paymentMethod", paymentMethod)
-                    .append("note", note)
-                    .append("quantity", quantity)
-                    .append("totalAmount", totalAmount)
-                    .append("orderDate", new Date())
-                    .append("status", "Đang xử lý");
+            Document order = new Document()
+                .append("userId", userId)
+                .append("productId", new ObjectId(productId))
+                .append("productNames", productName)
+                .append("customerName", customerName)
+                .append("phone", phone)
+                .append("email", email)
+                .append("address", address)
+                .append("paymentMethod", paymentMethod)
+                .append("note", note)
+                .append("quantity", quantity)
+                .append("totalAmount", totalAmount)
+                .append("orderDate", new Date())
+                .append("status", "Đang xử lý");
 
             orders.insertOne(order);
 

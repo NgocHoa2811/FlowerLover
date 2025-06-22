@@ -55,6 +55,8 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("user", user.getObjectId("_id").toHexString());
                     session.setAttribute("role", user.getString("role"));
+                    session.setAttribute("userEmail", email); // thêm dòng này
+
 
                     // Debug: In tham số redirect
                     String redirect = request.getParameter("redirect");

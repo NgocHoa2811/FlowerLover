@@ -39,7 +39,8 @@ public class DashboardOrderServlet extends HttpServlet {
                 String orderDate = orderDateObj != null ? sdf.format(orderDateObj) : "";
 
                 json.append("{")
-                    .append("\"orderId\": \"").append(o.getString("orderId")).append("\",")
+                   .append("\"orderId\": \"").append(o.getObjectId("_id").toHexString()).append("\",")
+
                     .append("\"customerName\": \"").append(escapeJson(o.getString("customerName"))).append("\",")
                     .append("\"phone\": \"").append(escapeJson(o.getString("phone"))).append("\",")
                     .append("\"email\": \"").append(escapeJson(o.getString("email"))).append("\",")
