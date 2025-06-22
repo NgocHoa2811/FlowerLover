@@ -9,45 +9,43 @@
     }
 %>
 <script>
-    // Định nghĩa contextPath và userEmail làm biến toàn cục
-    window.contextPath = '<%= contextPath %>';
-    window.userEmail = '<%= userEmail %>';
+    window.contextPath = '<%= contextPath%>';
+    window.userEmail = '<%= userEmail%>';
 </script>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="<%= contextPath %>/css/dashboard.css"/>
+        <link rel="stylesheet" href="<%= contextPath%>/css/dashboard.css"/>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;700" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet"> <!-- Thêm font nếu cần -->
-        <link rel="icon" href="<%= contextPath %>/favicon.ico" type="image/x-icon" /> <!-- Thêm favicon -->
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="icon" href="<%= contextPath%>/favicon.ico" type="image/x-icon" />
         <title>Dashboard</title>
-      
-        <script src="<%= contextPath %>/js/dashboard.js"></script>
+        <script src="<%= contextPath%>/js/dashboard.js"></script>
     </head>
     <body>
         <div class="sidebar" style="justify-content: space-between;">
             <div>
-                <button onclick="window.location.href='<%= contextPath %>/dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
-                <button onclick="window.location.href='<%= contextPath %>/dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
-                <button onclick="window.location.href='<%= contextPath %>/client.jsp'"><span class="material-symbols-outlined">person</span></button>            
+                <button onclick="window.location.href = '<%= contextPath%>/dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
+                <button onclick="window.location.href = '<%= contextPath%>/dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
+                <button onclick="window.location.href = '<%= contextPath%>/client.jsp'"><span class="material-symbols-outlined">person</span></button>
             </div>
             <div class="user-actions">
-                <a href="#" class="user-icon"><img id="userImage" src="<%= contextPath %>/images/avatar.jpg" alt="User Icon" class="user-image"></a>
+                <a href="#" class="user-icon"><img id="userImage" src="<%= contextPath%>/images/avatar.jpg" alt="User Icon" class="user-image"></a>
                 <span class="material-symbols-outlined" onclick="showProfileModal()" title="Chỉnh sửa hồ sơ">account_circle</span>
-                <span class="material-symbols-outlined" onclick="window.location.href='<%= contextPath %>/LogoutServlet'" title="Đăng xuất">logout</span>
+                <span class="material-symbols-outlined" onclick="window.location.href = '<%= contextPath%>/LogoutServlet'" title="Đăng xuất">logout</span>
             </div>
         </div>
 
-        <div id="product" class="tab-content active">    
+        <div id="product" class="tab-content active">
             <div class="header-top">
                 <a href="#" class="logo">FlowerLover</a>
             </div>
             <div class="content">
                 <div class="header">
                     <h2>Quản lý sản phẩm</h2>
-                    <button onclick="toggleForm()">+ Thêm mới</button>
+                    <button onclick="document.getElementById('addForm').classList.add('active')">+ Thêm mới</button>
                 </div>
                 <div class="table-container">
                     <table id="flowersTable">
@@ -68,70 +66,73 @@
                             </tr>
                         </thead>
                         <tbody id="flowersTableBody">
-                            <!-- Dữ liệu sẽ được tải bằng JavaScript -->
                         </tbody>
                     </table>
                 </div>
 
-                <div class="add-form" id="addForm">
+                <!-- Popup Add Form -->
+                <div class="popup-form" id="addForm">
                     <form id="addFlowerForm" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="name">Tên sản phẩm:</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Giá:</label>
-                            <input type="number" id="price" name="price" min="0" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="quantity">Số lượng:</label>
-                            <input type="number" id="quantity" name="quantity" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="images">Ảnh:</label>
-                            <input type="file" id="images" name="images" accept="image/*" multiple required>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Phân loại:</label>
-                            <select id="category" name="category" required>
-                                <option value="Hoa bó">Hoa bó</option>
-                                <option value="Lẵng hoa">Lẵng hoa</option>
-                                <option value="Hoa lẻ">Hoa lẻ</option>
-                                <option value="Hoa chậu">Hoa chậu</option>
-                                <option value="Hoa sự kiện">Hoa sự kiện</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Mô tả:</label>
-                            <textarea id="description" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="color">Màu sắc:</label>
-                            <input type="text" id="color" name="color">
-                        </div>
-                        <div class="form-group">
-                            <label for="flowerType">Loại hoa:</label>
-                            <input type="text" id="flowerType" name="flowerType">
-                        </div>
-                        <div class="form-group">
-                            <label for="size">Kích thước:</label>
-                            <select id="size" name="size">
-                                <option value="Nhỏ">Nhỏ</option>
-                                <option value="Trung bình">Trung bình</option>
-                                <option value="Lớn">Lớn</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Trạng thái:</label>
-                            <select id="status" name="status" required>
-                                <option value="Còn hàng">Còn hàng</option>
-                                <option value="Hết hàng">Hết hàng</option>
-                                <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
-                            </select>
+                        <h3>Thêm Sản Phẩm Mới</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Tên sản phẩm:</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Giá:</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Số lượng:</label>
+                                <input type="number" id="quantity" name="quantity" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="images">Ảnh:</label>
+                                <input type="file" id="images" name="images" accept="image/*" multiple required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Phân loại:</label>
+                                <select id="category" name="category" required>
+                                    <option value="Hoa bó">Hoa bó</option>
+                                    <option value="Lẵng hoa">Lẵng hoa</option>
+                                    <option value="Hoa lẻ">Hoa lẻ</option>
+                                    <option value="Hoa chậu">Hoa chậu</option>
+                                    <option value="Hoa sự kiện">Hoa sự kiện</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Mô tả:</label>
+                                <textarea id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="color">Màu sắc:</label>
+                                <input type="text" id="color" name="color">
+                            </div>
+                            <div class="form-group">
+                                <label for="flowerType">Loại hoa:</label>
+                                <input type="text" id="flowerType" name="flowerType">
+                            </div>
+                            <div class="form-group">
+                                <label for="size">Kích thước:</label>
+                                <select id="size" name="size">
+                                    <option value="Nhỏ">Nhỏ</option>
+                                    <option value="Trung bình">Trung bình</option>
+                                    <option value="Lớn">Lớn</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Trạng thái:</label>
+                                <select id="status" name="status" required>
+                                    <option value="Còn hàng">Còn hàng</option>
+                                    <option value="Hết hàng">Hết hàng</option>
+                                    <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="save-btn">Lưu</button>
-                            <button type="button" class="cancel-btn" onclick="toggleForm()">Hủy</button>
+                            <button type="button" class="cancel-btn" onclick="document.getElementById('addForm').classList.remove('active')">Hủy</button>
                         </div>
                     </form>
                 </div>
@@ -206,17 +207,12 @@
             </div>
         </div>
 
-        <div id="order" class="tab-content">
-            <!-- Nội dung cho tab Order -->
-        </div>
-        <div id="client" class="tab-content">
-            <!-- Nội dung cho tab Client -->
-        </div>
+        <div id="order" class="tab-content"></div>
+        <div id="client" class="tab-content"></div>
 
-        <!-- Include modal hồ sơ -->
         <jsp:include page="profileModal.jsp">
-            <jsp:param name="contextPath" value="<%= contextPath %>" />
-            <jsp:param name="userEmail" value="<%= userEmail %>" />
+            <jsp:param name="contextPath" value="<%= contextPath%>" />
+            <jsp:param name="userEmail" value="<%= userEmail%>" />
         </jsp:include>
     </body>
     <script>
@@ -234,12 +230,12 @@
             document.body.appendChild(iframe);
 
             // Gọi hàm showProfileModal từ iframe
-            iframe.onload = function() {
+            iframe.onload = function () {
                 iframe.contentWindow.showProfileModal();
             };
 
             // Đóng iframe khi nhấp ra ngoài
-            iframe.onclick = function(event) {
+            iframe.onclick = function (event) {
                 if (event.target === iframe) {
                     document.body.removeChild(iframe);
                 }
@@ -250,28 +246,29 @@
         function fetchUserImage(email) {
             fetch(window.contextPath + '/GetUserServlet?email=' + encodeURIComponent(email), {
                 method: 'GET',
-                headers: { 'Accept': 'application/json' }
+                headers: {'Accept': 'application/json'}
             })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                const userImage = document.getElementById('userImage');
-                if (data.profileImage && !data.profileImage.startsWith("data:image")) {
-                    userImage.src = 'data:image/jpeg;base64,' + data.profileImage;
-                } else {
-                    userImage.src = window.contextPath + '/images/avatar.jpg';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user image:', error);
-                document.getElementById('userImage').src = window.contextPath + '/images/avatar.jpg';
-            });
+                    .then(response => {
+                        if (!response.ok)
+                            throw new Error('Failed to fetch: ' + response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        const userImage = document.getElementById('userImage');
+                        if (data.profileImage && !data.profileImage.startsWith("data:image")) {
+                            userImage.src = 'data:image/jpeg;base64,' + data.profileImage;
+                        } else {
+                            userImage.src = window.contextPath + '/images/avatar.jpg';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user image:', error);
+                        document.getElementById('userImage').src = window.contextPath + '/images/avatar.jpg';
+                    });
         }
 
         // Lắng nghe thông điệp từ iframe để reload avatar
-        window.addEventListener('message', function(event) {
+        window.addEventListener('message', function (event) {
             if (event.data === 'profileUpdated') {
                 fetchUserImage(window.userEmail);
             }

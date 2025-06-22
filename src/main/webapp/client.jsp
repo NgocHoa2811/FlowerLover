@@ -27,7 +27,7 @@
         <div class="sidebar" style="justify-content: space-between;">
             <div>
                 <button onclick="window.location.href='<%= contextPath %>/dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
-                <button onclick="window.location.href='<%= contextPath %>/OrderServlet'"><span class="material-symbols-outlined">receipt_long</span></button>
+                <button onclick="window.location.href='<%= contextPath %>/dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
                 <button onclick="window.location.href='<%= contextPath %>/client.jsp'"><span class="material-symbols-outlined">person</span></button>            
             </div>
             <div class="user-actions">
