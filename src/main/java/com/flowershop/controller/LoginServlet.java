@@ -53,8 +53,10 @@ public class LoginServlet extends HttpServlet {
                 BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPassword.toCharArray());
                 if (result.verified) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("user", user.getString("email"));
+                    session.setAttribute("user", user.getObjectId("_id").toHexString());
                     session.setAttribute("role", user.getString("role"));
+                    session.setAttribute("userEmail", email); // thêm dòng này
+
 
                     // Debug: In tham số redirect
                     String redirect = request.getParameter("redirect");

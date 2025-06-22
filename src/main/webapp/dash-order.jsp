@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;700" rel="stylesheet" />
     <title>Quản lý đơn hàng</title>
 </head>
+<script src="js/dash-order.js"></script>
+
 <body>
     <div class="sidebar">
         <div class="logo"><img src="https://i.pinimg.com/736x/57/1d/61/571d612946ec0c51d55d9b7b6700afc2.jpg" alt="alt"/></div>
@@ -143,83 +145,12 @@
         </div>
     </div>
 
-    <script>
-        function showTab(tabId) {
-            const tabs = document.getElementsByClassName('tab-content');
-            for (let i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            document.getElementById(tabId).classList.add('active');
-            let title = tabId.charAt(0).toUpperCase() + tabId.slice(1);
-            if (tabId === 'order') title = 'Quản lý đơn hàng';
-            document.querySelector('.header h2').textContent = title;
-        }
-
-        function toggleForm() {
-            const form = document.getElementById('addForm');
-            form.classList.toggle('active');
-            if (!form.classList.contains('active')) {
-                document.getElementById('orderForm').reset();
-            }
-        }
-
-        function updateStatus(orderId, status) {
-            fetch('/updateOrderStatus', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `orderId=${orderId}&status=${status}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Cập nhật trạng thái thành công!');
-                } else {
-                    alert('Cập nhật trạng thái thất bại: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi:', error);
-                alert('Đã xảy ra lỗi khi cập nhật trạng thái.');
-            });
-        }
-
-        function viewDetails(orderId) {
-            alert(`Xem chi tiết đơn hàng ${orderId}`);
-            // Implement redirect to details page or modal
-        }
-
-        function updateOrder(orderId) {
-            alert(`Cập nhật đơn hàng ${orderId}`);
-            // Implement update logic
-        }
-
-        function printOrder(orderId) {
-            alert(`In đơn hàng ${orderId}`);
-            // Implement print logic
-        }
-
-        document.getElementById('orderForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            fetch('/addOrder', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Thêm đơn hàng thành công!');
-                    toggleForm();
-                    location.reload();
-                } else {
-                    alert('Thêm đơn hàng thất bại: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi:', error);
-                alert('Đã xảy ra lỗi khi thêm đơn hàng.');
-            });
-        });
-    </script>
+<!-- Popup hóa đơn -->
+<div id="invoicePopup" class="popup-overlay" style="display:none;">
+  <div class="popup-content">
+    <span class="close-btn" onclick="closeInvoicePopup()">&times;</span>
+    <div id="invoiceContent"></div>
+  </div>
+</div>
 </body>
 </html>
