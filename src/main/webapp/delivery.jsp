@@ -29,7 +29,7 @@
                 <p>Chúng tôi cam kết giao hoa tươi đến tận nhà bạn trong vòng 2 giờ tại Hà Nội với đội ngũ nhân viên chuyên nghiệp.</p>
             </div>
             <div class="delivery-hero-image">
-                <img src="images/baner.jpg" alt="Dịch vụ giao hàng">
+                <img src="https://i.pinimg.com/736x/f2/8e/13/f28e133ebbd26e051e39ce531c2d0d3f.jpg" alt="Dịch vụ giao hàng">
             </div>
         </div>
     </section>

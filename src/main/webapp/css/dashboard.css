@@ -7,6 +7,7 @@ body {
     padding: 0;
     color: #333333;
     height: 100vh;
+    display: flex;
 }
 
 /* Loại bỏ overlay vì form không còn là popup */
@@ -52,10 +53,8 @@ body {
 .header-top {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
     width: 100%;
     margin-bottom: 20px;
-    background-color: #c8e6c9;
 }
 
 .logo img {
@@ -75,34 +74,54 @@ body {
 }
 
 .sidebar {
-    width: 80px;
-    height: 100vh;
-    background-color: #c8e6c9;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    width: 60px;
     display: flex;
+    background-color: #22392C;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
     flex-direction: column;
     align-items: center;
 }
 
-.sidebar button {
-    width: 60px;
-    height: 60px;
-    background-color: transparent;
-    border: none;
-    color: #2e7d32;
-    font-size: 24px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    border-radius: 50%;
-    transition: background-color 0.3s;
+.sidebar .logo img {
+    width: 40%;
+    margin-bottom: 20px;
 }
 
-.sidebar button:hover {
-    background-color: #a5d6a7;
+    .user-icon {
+        padding: 5px;
+        text-decoration: none;
+    }
+
+    .user-image {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+.sidebar button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+}
+
+.user-actions{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-actions:hover{
+    background: none;
 }
 
 .sidebar button:last-child {
@@ -114,7 +133,6 @@ body {
 }
 
 .tab-content {
-    margin-left: 80px;
     padding: 20px;
     height: 100vh;
     overflow-y: auto;

@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo"><img src="https://i.pinimg.com/736x/57/1d/61/571d612946ec0c51d55d9b7b6700afc2.jpg" alt="alt"/></div>
+        <div class="logo"><img src="images/FlowerLoverlogo.png" alt="alt"/></div>
         <button onclick="window.location.href='dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
         <button onclick="showTab('order')"><span class="material-symbols-outlined">receipt_long</span></button>
         <button onclick="window.location.href='client.jsp'"><span class="material-symbols-outlined">person</span></button>
@@ -26,6 +26,12 @@
                 <h2>Quản lý đơn hàng</h2>
                 <button onclick="toggleForm()">+ Thêm mới</button>
             </div>
+            
+                <div class="tab-nav">
+                <button class="tab-button active" onclick="showTab('orders')">Đơn hàng</button>
+                <button class="tab-button" onclick="window.location.href='dash-custom-order.jsp'">Yêu cầu đặt riêng</button>
+            </div>
+            
             <div class="table-container">
                 <table class="order-table">
                     <thead>

@@ -1,26 +1,43 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String contextPath = request.getContextPath();
+    String userEmail = (String) session.getAttribute("user");
+    if (userEmail == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <script>
-    const contextPath = '<%= request.getContextPath()%>';
+    // Định nghĩa contextPath và userEmail làm biến toàn cục
+    window.contextPath = '<%= contextPath %>';
+    window.userEmail = '<%= userEmail %>';
 </script>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/dashboard.css"/>
+        <link rel="stylesheet" href="<%= contextPath %>/css/dashboard.css"/>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet"> <!-- Thêm font nếu cần -->
+        <link rel="icon" href="<%= contextPath %>/favicon.ico" type="image/x-icon" /> <!-- Thêm favicon -->
         <title>Dashboard</title>
       
-      <script src="js/dashboard.js"></script>
-
+        <script src="<%= contextPath %>/js/dashboard.js"></script>
     </head>
     <body>
-        <div class="sidebar">
-            <div class="logo"><img src="https://i.pinimg.com/736x/57/1d/61/571d612946ec0c51d55d9b7b6700afc2.jpg" alt="alt"/></div>
-            <button onclick="showTab('product')"><span class="material-symbols-outlined">local_florist</span></button>
-            <button onclick="window.location.href = 'dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
-            <button onclick="showTab('client')"><span class="material-symbols-outlined">person</span></button>
+        <div class="sidebar" style="justify-content: space-between;">
+            <div>
+                <button onclick="window.location.href='<%= contextPath %>/dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
+                <button onclick="window.location.href='<%= contextPath %>/dash-order.jsp'"><span class="material-symbols-outlined">receipt_long</span></button>
+                <button onclick="window.location.href='<%= contextPath %>/client.jsp'"><span class="material-symbols-outlined">person</span></button>            
+            </div>
+            <div class="user-actions">
+                <a href="#" class="user-icon"><img id="userImage" src="<%= contextPath %>/images/avatar.jpg" alt="User Icon" class="user-image"></a>
+                <span class="material-symbols-outlined" onclick="showProfileModal()" title="Chỉnh sửa hồ sơ">account_circle</span>
+                <span class="material-symbols-outlined" onclick="window.location.href='<%= contextPath %>/LogoutServlet'" title="Đăng xuất">logout</span>
+            </div>
         </div>
 
         <div id="product" class="tab-content active">    
@@ -52,10 +69,8 @@
                         </thead>
                         <tbody id="flowersTableBody">
                             <!-- Dữ liệu sẽ được tải bằng JavaScript -->
-
                         </tbody>
                     </table>
-
                 </div>
 
                 <div class="add-form" id="addForm">
@@ -197,7 +212,76 @@
         <div id="client" class="tab-content">
             <!-- Nội dung cho tab Client -->
         </div>
+
+        <!-- Include modal hồ sơ -->
+        <jsp:include page="profileModal.jsp">
+            <jsp:param name="contextPath" value="<%= contextPath %>" />
+            <jsp:param name="userEmail" value="<%= userEmail %>" />
+        </jsp:include>
     </body>
+    <script>
+        // Hàm showProfileModal để mở modal
+        function showProfileModal() {
+            const iframe = document.createElement('iframe');
+            iframe.src = window.contextPath + '/profileModal.jsp';
+            iframe.style.position = 'fixed';
+            iframe.style.top = '0';
+            iframe.style.left = '0';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.style.zIndex = '1000';
+            document.body.appendChild(iframe);
+
+            // Gọi hàm showProfileModal từ iframe
+            iframe.onload = function() {
+                iframe.contentWindow.showProfileModal();
+            };
+
+            // Đóng iframe khi nhấp ra ngoài
+            iframe.onclick = function(event) {
+                if (event.target === iframe) {
+                    document.body.removeChild(iframe);
+                }
+            };
+        }
+
+        // Hàm fetchUserImage để cập nhật avatar trong sidebar
+        function fetchUserImage(email) {
+            fetch(window.contextPath + '/GetUserServlet?email=' + encodeURIComponent(email), {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch: ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                const userImage = document.getElementById('userImage');
+                if (data.profileImage && !data.profileImage.startsWith("data:image")) {
+                    userImage.src = 'data:image/jpeg;base64,' + data.profileImage;
+                } else {
+                    userImage.src = window.contextPath + '/images/avatar.jpg';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user image:', error);
+                document.getElementById('userImage').src = window.contextPath + '/images/avatar.jpg';
+            });
+        }
+
+        // Lắng nghe thông điệp từ iframe để reload avatar
+        window.addEventListener('message', function(event) {
+            if (event.data === 'profileUpdated') {
+                fetchUserImage(window.userEmail);
+            }
+        });
+
+        // Gọi hàm fetchUserImage khi trang được tải
+        window.addEventListener('load', () => {
+            if (window.userEmail) {
+                fetchUserImage(window.userEmail);
+            }
+        });
+    </script>
 </html>
-
-

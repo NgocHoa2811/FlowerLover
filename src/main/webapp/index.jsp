@@ -306,10 +306,14 @@
         </div>
     </section>
 
+    <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
+
     <%@ include file="footer.jsp" %>
 
     <script>
         $(document).ready(function(){
+            // Slick slider cho review
             $('.reviews-grid').slick({
                 slidesToShow: 3,
                 slidesToScroll: 1,
