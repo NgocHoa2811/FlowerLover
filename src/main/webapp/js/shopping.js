@@ -118,7 +118,7 @@ function renderProducts(products, favorites = [], cart = {}) {
     $('.product-card').off('click').on('click', function (e) {
         if (!$(e.target).closest('.actions').length) {
             const productId = $(this).data('id');
-            window.location.href = `product-details.jsp?id=${productId}`;
+            window.location.href = `product-detail.jsp?id=${productId}`;
         }
     });
 
