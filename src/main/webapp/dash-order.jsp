@@ -1,23 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String userEmail = (String) session.getAttribute("user");
+    if (userEmail == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    String contextPath = request.getContextPath();
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/dash-order.css"/>
+ 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;700" rel="stylesheet" />
     <title>Quản lý đơn hàng</title>
 </head>
 <script src="js/dash-order.js"></script>
 
 <body>
-    <div class="sidebar">
-        <div class="logo"><img src="images/FlowerLoverlogo.png" alt="alt"/></div>
-        <button onclick="window.location.href='dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
-        <button onclick="showTab('order')"><span class="material-symbols-outlined">receipt_long</span></button>
-        <button onclick="window.location.href='client.jsp'"><span class="material-symbols-outlined">person</span></button>
+   <div class="sidebar" style="justify-content: space-between;">
+    <div>
+        <button onclick="window.location.href='<%= request.getContextPath() %>/dashboard.jsp'"><span class="material-symbols-outlined">local_florist</span></button>
+        <button onclick="window.location.href='<%= request.getContextPath() %>/OrderServlet'"><span class="material-symbols-outlined">receipt_long</span></button>
+        <button onclick="window.location.href='<%= request.getContextPath() %>/client.jsp'"><span class="material-symbols-outlined">person</span></button>            
     </div>
+    <div class="user-actions">
+        <a href="#" class="user-icon"><img id="userImage" src="<%= request.getContextPath() %>/images/avatar.jpg" alt="User Icon" class="user-image"></a>
+        <span class="material-symbols-outlined" onclick="showProfileModal()" title="Chỉnh sửa hồ sơ">account_circle</span>
+        <span class="material-symbols-outlined" onclick="window.location.href='<%= request.getContextPath() %>/LogoutServlet'" title="Đăng xuất">logout</span>
+    </div>
+</div>
+
 
     <div id="order" class="tab-content active">
         <div class="header-top">
@@ -159,4 +176,61 @@
   </div>
 </div>
 </body>
+<script>
+    window.contextPath = '<%= contextPath %>';
+    window.userEmail = '<%= userEmail %>';
+
+    function showProfileModal() {
+        const iframe = document.createElement('iframe');
+        iframe.src = window.contextPath + '/profileModal.jsp';
+        iframe.style.position = 'fixed';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.zIndex = '1000';
+        document.body.appendChild(iframe);
+
+        iframe.onload = function() {
+            iframe.contentWindow.showProfileModal();
+        };
+
+        iframe.onclick = function(event) {
+            if (event.target === iframe) {
+                document.body.removeChild(iframe);
+            }
+        };
+    }
+
+    function fetchUserImage(email) {
+        fetch(window.contextPath + '/GetUserServlet?email=' + encodeURIComponent(email), {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(response => response.ok ? response.json() : Promise.reject())
+        .then(data => {
+            const userImage = document.getElementById('userImage');
+            userImage.src = (data.profileImage && !data.profileImage.startsWith("data:image"))
+                ? 'data:image/jpeg;base64,' + data.profileImage
+                : window.contextPath + '/images/avatar.jpg';
+        })
+        .catch(() => {
+            document.getElementById('userImage').src = window.contextPath + '/images/avatar.jpg';
+        });
+    }
+
+    window.addEventListener('message', function(event) {
+        if (event.data === 'profileUpdated') {
+            fetchUserImage(window.userEmail);
+        }
+    });
+
+    window.addEventListener('load', () => {
+        if (window.userEmail) {
+            fetchUserImage(window.userEmail);
+        }
+    });
+</script>
+
 </html>

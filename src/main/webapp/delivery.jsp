@@ -1,5 +1,5 @@
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="java.util.*, com.mongodb.client.*, org.bson.Document, org.bson.types.ObjectId" %>
 <%@ page import="com.flowershop.util.MongoUtil" %>
 <!DOCTYPE html>
@@ -84,53 +84,106 @@
 <%
     } else {
         MongoDatabase db = MongoUtil.getDatabase();
+        ObjectId userId = new ObjectId(userIdStr);
+
         MongoCollection<Document> orders = db.getCollection("orders");
+        List<Document> orderList = orders.find(new Document("userId", userId)).into(new ArrayList<>());
 
-        List<Document> orderList = orders.find(new Document("userId", new ObjectId(userIdStr))).into(new ArrayList<>());
+        MongoCollection<Document> customOrders = db.getCollection("custom_orders");
+        List<Document> customOrderList = customOrders.find(new Document("userId", userId)).into(new ArrayList<>());
 
-        if (orderList.isEmpty()) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        if (orderList.isEmpty() && customOrderList.isEmpty()) {
 %>
     <p style="text-align:center; font-size:18px;">Bạn chưa có đơn hàng nào.</p>
 <%
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            for (Document order : orderList) {
-                String productName = order.getString("productNames");
-                String status = order.getString("status");
-
-                String step2 = "step";
-                String step3 = "step";
-                String step4 = "step";
-
-                if ("Đã xác nhận".equals(status)) step2 += " completed";
-                else if ("Đang xử lý".equals(status)) step2 += " active";
-
-                if ("Đã giao".equals(status)) step3 += " completed";
-                else if ("Đã xác nhận".equals(status)) step3 += " active";
-
-                if ("Đã giao".equals(status)) step4 += " completed";
 %>
-<section class="product-gallery">
-    <div class="container">
-        <div class="order-box">
-            <div class="order-details">
-                <p><strong>Sản phẩm:</strong> <%=productName%></p>
-                <p><strong>Số lượng:</strong> <%=order.getInteger("quantity")%></p>
-                <p><strong>Tổng tiền:</strong> <%=String.format("%,d", order.getDouble("totalAmount").intValue())%> VNĐ</p>
-                <p><strong>Ngày đặt:</strong> <%=sdf.format(order.getDate("orderDate"))%></p>
-                <p><strong>Trạng thái hiện tại:</strong> <%=status%></p>
+    <% if (!orderList.isEmpty()) { %>
+        <h3 style="text-align: center;">Đơn đặt hàng thường</h3>
+        <% for (Document order : orderList) {
+            String productName = order.getString("productNames");
+            String status = order.getString("status");
+            String step2 = "step";
+            String step3 = "step";
+            String step4 = "step";
+
+            if ("Đã xác nhận".equals(status)) step2 += " completed";
+            else if ("Đang xử lý".equals(status)) step2 += " active";
+
+            if ("Đã giao".equals(status)) step3 += " completed";
+            else if ("Đã xác nhận".equals(status)) step3 += " active";
+
+            if ("Đã giao".equals(status)) step4 += " completed";
+        %>
+        <section class="product-gallery">
+            <div class="container">
+                <div class="order-box">
+                    <div class="order-details">
+                        <p><strong>Sản phẩm:</strong> <%=productName%></p>
+                        <p><strong>Số lượng:</strong> <%=order.getInteger("quantity")%></p>
+                        <p><strong>Tổng tiền:</strong> <%=String.format("%,d", order.getDouble("totalAmount").intValue())%> VNĐ</p>
+                        <p><strong>Ngày đặt:</strong> <%=sdf.format(order.getDate("orderDate"))%></p>
+                        <p><strong>Trạng thái hiện tại:</strong> <%=status%></p>
+                    </div>
+                    <div class="status-bar">
+                        <div class="step completed"><div class="step-circle">✔</div><p>Đặt hàng</p></div>
+                        <div class="<%=step2%>"><div class="step-circle">✔</div><p>Xác nhận</p></div>
+                        <div class="<%=step3%>"><div class="step-circle">●</div><p>Đang giao</p></div>
+                        <div class="<%=step4%>"><div class="step-circle">○</div><p>Đã giao</p></div>
+                    </div>
+                </div>
             </div>
-            <div class="status-bar">
-                <div class="step completed"><div class="step-circle">✔</div><p>Đặt hàng</p></div>
-                <div class="<%=step2%>"><div class="step-circle">✔</div><p>Xác nhận</p></div>
-                <div class="<%=step3%>"><div class="step-circle">●</div><p>Đang giao</p></div>
-                <div class="<%=step4%>"><div class="step-circle">○</div><p>Đã giao</p></div>
+        </section>
+        <% } %>
+    <% } %>
+
+    <% if (!customOrderList.isEmpty()) { %>
+        <h3 style="text-align:center;">Đơn đặt hàng theo yêu cầu</h3>
+        <% for (Document order : customOrderList) {
+            String flower = order.getString("main_flower");
+            String status = order.getString("status") != null ? order.getString("status") : "Đang xử lý";
+            String recipientName = order.getString("recipient_name");
+            String deliveryDate = order.getString("delivery_date");
+            int budget = order.get("budget") != null ? ((Number) order.get("budget")).intValue() : 0;
+            int quantity = order.get("quantity") != null ? ((Number) order.get("quantity")).intValue() : 0;
+
+            String step2 = "step";
+            String step3 = "step";
+            String step4 = "step";
+
+            if ("Đã xác nhận".equals(status)) step2 += " completed";
+            else if ("Đang xử lý".equals(status)) step2 += " active";
+
+            if ("Đã giao".equals(status)) step3 += " completed";
+            else if ("Đã xác nhận".equals(status)) step3 += " active";
+
+            if ("Đã giao".equals(status)) step4 += " completed";
+        %>
+        <section class="product-gallery">
+            <div class="container">
+                <div class="order-box">
+                    <div class="order-details">
+                        <p><strong>Hoa chính:</strong> <%=flower%></p>
+                        <p><strong>Số lượng:</strong> <%=quantity%></p>
+                        <p><strong>Ngân sách:</strong> <%=String.format("%,d", budget)%> VNĐ</p>
+                        <p><strong>Người nhận:</strong> <%=recipientName%></p>
+                        <p><strong>Ngày giao:</strong> <%=deliveryDate != null ? deliveryDate : "Chưa xác định"%></p>
+                        <p><strong>Trạng thái hiện tại:</strong> <%=status%></p>
+                    </div>
+                    <div class="status-bar">
+                        <div class="step completed"><div class="step-circle">✔</div><p>Đặt hàng</p></div>
+                        <div class="<%=step2%>"><div class="step-circle">✔</div><p>Xác nhận</p></div>
+                        <div class="<%=step3%>"><div class="step-circle">●</div><p>Đang giao</p></div>
+                        <div class="<%=step4%>"><div class="step-circle">○</div><p>Đã giao</p></div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
+        <% } %>
+    <% } %>
 <%
-            }
         }
     }
 %>

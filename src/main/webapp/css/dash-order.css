@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #d8e8d8;
+    background-color: #FEF4EB;
     margin: 0;
     padding: 0;
     color: #333333;
@@ -60,9 +60,9 @@ body {
     transition: background-color 0.3s;
 }
 
-.sidebar button:hover {
+/*.sidebar button:hover {
     background-color: #a5d6a7;
-}
+}*/
 
 .sidebar button:last-child {
     margin-bottom: 0;
@@ -101,14 +101,14 @@ body {
 }
 
 .header h2 {
-    color: #2e7d32;
+    color: #22392C;
     margin: 0;
     font-size: 24px;
 }
 
 .header button {
     padding: 10px 20px;
-    background-color: #4caf50;
+    background-color: #22392C;
     color: white;
     border: none;
     border-radius: 5px;
@@ -133,7 +133,7 @@ th, td {
 }
 
 th {
-    background-color: #a5d6a7;
+    background-color: #22392C;
     color: white;
 }
 
@@ -307,7 +307,7 @@ td img {
             transition: background 0.3s;
         }
         .tab-nav button.active {
-            background: #4CAF50;
+            background: #22392C;
             color: white;
         }
         .tab-nav button:hover {
@@ -319,3 +319,44 @@ td img {
         .tab-content.active {
             display: block;
         }
+.sidebar {
+    width: 60px;
+    display: flex;
+    background-color: #22392C;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+}
+
+.sidebar .logo img {
+    width: 40%;
+    margin-bottom: 20px;
+}
+
+.user-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
