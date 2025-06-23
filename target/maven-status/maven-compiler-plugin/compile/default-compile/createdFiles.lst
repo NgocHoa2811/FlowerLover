@@ -14,11 +14,13 @@ com\flowershop\controller\GenerateInvoiceServlet.class
 com\flowershop\controller\DashboardOrderServlet.class
 com\mycompany\maven1\JakartaRestConfiguration.class
 com\flowershop\servlet\SalesStatisticsServlet.class
+com\flowershop\controller\UpdateCustomOrderServlet.class
 com\flowershop\controller\ResponseMessage.class
 com\flowershop\controller\ChatbotServlet.class
 AddToCartServlet.class
 com\flowershop\controller\RegisterServlet.class
 DisplayAcountTable.class
+com\flowershop\controller\GenerateCustomInvoiceServlet.class
 com\flowershop\controller\UpdateFlowerServlet.class
 com\flowershop\dao\Product.class
 com\flowershop\controller\AddFlowerServlet.class
