@@ -189,7 +189,7 @@
         background-color: #fff;
         box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         z-index: 1;
-        min-width: 150px;
+        min-width: 200px;
         border-radius: 4px;
     }
 
