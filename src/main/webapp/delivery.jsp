@@ -134,6 +134,9 @@
         }
     }
 %>
+    <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
+    
 
 <%@ include file="footer.jsp" %>
 </body>

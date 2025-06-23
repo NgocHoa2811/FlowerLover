@@ -200,6 +200,9 @@
     </div>
   </section>
 
+      <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
+    
   <!-- Footer -->
   <%@ include file="footer.jsp" %>
 

@@ -26,12 +26,12 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            // Kiểm tra session
             HttpSession session = req.getSession(false);
             String userIdStr = (session != null) ? (String) session.getAttribute("user") : null;
 
             if (userIdStr == null) {
-                // Nếu không có session, chuyển về login
-                resp.sendRedirect("login.jsp?error=Vui lòng đăng nhập để đặt hàng");
+                resp.sendRedirect("login.jsp?error=" + java.net.URLEncoder.encode("Vui lòng đăng nhập để đặt hàng", "UTF-8"));
                 return;
             }
 
@@ -49,8 +49,41 @@ public class OrderServlet extends HttpServlet {
             String priceStr = req.getParameter("price");
             String quantityStr = req.getParameter("quantity");
 
-            double price = Double.parseDouble(priceStr);
-            int quantity = quantityStr != null ? Integer.parseInt(quantityStr) : 1;
+            // Kiểm tra quantity
+            if (quantityStr == null || quantityStr.trim().isEmpty()) {
+                resp.sendRedirect("invoice.jsp?error=" + java.net.URLEncoder.encode("Vui lòng nhập số lượng", "UTF-8"));
+                return;
+            }
+
+            int quantity;
+            try {
+                quantity = Integer.parseInt(quantityStr);
+                if (quantity < 1) {
+                    resp.sendRedirect("invoice.jsp?error=" + java.net.URLEncoder.encode("Số lượng phải lớn hơn 0", "UTF-8"));
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                resp.sendRedirect("invoice.jsp?error=" + java.net.URLEncoder.encode("Số lượng không hợp lệ", "UTF-8"));
+                return;
+            }
+
+            // Ghi log để debug
+            System.out.println("Quantity from form: " + quantityStr);
+            System.out.println("Parsed quantity: " + quantity);
+
+            // Kiểm tra price
+            double price;
+            try {
+                price = Double.parseDouble(priceStr);
+                if (price <= 0) {
+                    resp.sendRedirect("invoice.jsp?error=" + java.net.URLEncoder.encode("Giá sản phẩm không hợp lệ", "UTF-8"));
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                resp.sendRedirect("invoice.jsp?error=" + java.net.URLEncoder.encode("Giá sản phẩm không hợp lệ", "UTF-8"));
+                return;
+            }
+
             double totalAmount = price * quantity;
 
             // Lưu vào MongoDB
@@ -58,23 +91,23 @@ public class OrderServlet extends HttpServlet {
             MongoCollection<Document> orders = database.getCollection("orders");
 
             Document order = new Document()
-                .append("userId", userId)
-                .append("productId", new ObjectId(productId))
-                .append("productNames", productName)
-                .append("customerName", customerName)
-                .append("phone", phone)
-                .append("email", email)
-                .append("address", address)
-                .append("paymentMethod", paymentMethod)
-                .append("note", note)
-                .append("quantity", quantity)
-                .append("totalAmount", totalAmount)
-                .append("orderDate", new Date())
-                .append("status", "Đang xử lý");
+                    .append("userId", userId)
+                    .append("productId", new ObjectId(productId))
+                    .append("productNames", productName)
+                    .append("customerName", customerName)
+                    .append("phone", phone)
+                    .append("email", email)
+                    .append("address", address)
+                    .append("paymentMethod", paymentMethod)
+                    .append("note", note)
+                    .append("quantity", quantity)
+                    .append("totalAmount", totalAmount)
+                    .append("orderDate", new Date())
+                    .append("status", "Đang xử lý");
 
             orders.insertOne(order);
 
-            // Chuyển hướng với thông báo
+            // Chuyển hướng với thông báo thành công
             resp.sendRedirect("invoice.jsp?success=1");
 
         } catch (Exception e) {

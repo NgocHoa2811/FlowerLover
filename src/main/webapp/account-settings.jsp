@@ -288,6 +288,10 @@
         // Kiểm tra thay đổi ban đầu
         checkChanges();
     </script>
+    
+        <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
+    
     <%@ include file="footer.jsp" %>
 </body>
 </html>
