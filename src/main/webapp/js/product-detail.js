@@ -12,12 +12,17 @@ $(document).ready(function () {
     if (qty > 1) $('#quantity').val(qty - 1);
   });
 
-  $('#addToCart').click(function () {
-    const quantity = $('#quantity').val();
-    $.post(`${contextPath}/add-to-cart`, { productId, quantity }, function () {
-      showToast('Đã thêm vào giỏ hàng!');
-    }).fail(() => showToast('Lỗi khi thêm vào giỏ hàng'));
-  });
+$('#addToCart').click(function () {
+  const quantity = $('#quantity').val();
+  $.post(`${contextPath}/add-to-cart`, { productId, quantity }, function (response) {
+    showToast('Đã thêm vào giỏ hàng!');
+    // Gọi API để lấy dữ liệu giỏ hàng mới
+    $.get(`${contextPath}/cart`, function (cartData) {
+      // Cập nhật số lượng trên giao diện (ví dụ: cập nhật badge giỏ hàng)
+      $('#cart-quantity').text(cartData.quantity || quantity); // Giả sử cartData có trường quantity
+    });
+  }).fail(() => showToast('Lỗi khi thêm vào giỏ hàng'));
+});
 
   $('#buyNow').click(function () {
     const quantity = $('#quantity').val();

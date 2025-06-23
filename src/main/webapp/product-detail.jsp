@@ -84,6 +84,9 @@
 
 <div id="toast" style="position: fixed; bottom: 20px; right: 20px; background-color: #22392C; color: white; padding: 10px 20px; border-radius: 8px; display: none; z-index: 1000; font-size: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);"></div>
 
+    <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
+    
 <%@ include file="footer.jsp" %>
 <script src="${pageContext.request.contextPath}/js/product-detail.js"></script>
 </body>

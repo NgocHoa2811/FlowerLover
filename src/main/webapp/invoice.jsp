@@ -124,10 +124,6 @@
         <div class="info">
             <p><strong>Sản phẩm:</strong> <%=product.getString("name")%></p>
             <p><strong>Giá:</strong> <%=String.format("%.0f", price)%> VND</p>
-            <p>
-                <strong>Số lượng:</strong>
-                <input type="number" name="quantity" id="quantity" min="1" value="1" onchange="updateTotal(<%=price%>)" required style="width: 80px;">
-            </p>
             <p><strong>Tổng tiền:</strong> <span id="totalDisplay"><%=String.format("%.0f", price)%> VND</span></p>
         </div>
     </div>
@@ -138,7 +134,7 @@
         <input type="hidden" name="productName" value="<%=product.getString("name")%>">
         <input type="hidden" name="price" value="<%=price%>">
         <input type="hidden" name="totalAmount" id="totalAmount" value="<%=price%>">
-
+        <p><strong>Số lượng:</strong> <input type="number" name="quantity" id="quantity" min="1" value="1" onchange="updateTotal(<%=price%>)" required style="width: 80px;"></p>
         <!-- Customer info -->
         <label>Họ tên người nhận:</label>
         <input type="text" name="customerName" required>
@@ -171,6 +167,9 @@
         <p style="color: red;">Không tìm thấy sản phẩm cần mua.</p>
     <% } %>
 </section>
+
+    <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
 
 <%@ include file="footer.jsp" %>
 <script>
@@ -214,6 +213,19 @@ window.onload = function () {
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 }
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    const quantity = document.getElementById('quantity').value;
+    if (!quantity || parseInt(quantity) < 1) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Lỗi',
+            text: 'Vui lòng nhập số lượng hợp lệ (lớn hơn 0)',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+});
 </script>
 
 </body>

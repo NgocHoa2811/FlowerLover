@@ -52,6 +52,9 @@
         </div>
     </div>
 </section>
+        
+            <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
 
 <%@ include file="footer.jsp" %>
 </body>

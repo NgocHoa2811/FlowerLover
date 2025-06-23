@@ -21,7 +21,6 @@
                     <a href="#" class="user-icon"><img id="userImage" src="images/avatar.jpg" alt="User Icon" class="user-image"></a>
                     <div class="dropdown-menu">
                         <a href="favorite.jsp">Yêu thích</a>
-                        <a href="orders.jsp">Đơn hàng</a>
                         <a href="account-settings.jsp">Hồ sơ người dùng</a>
                         <a href="LogoutServlet">Đăng xuất</a>
                     </div>
@@ -190,7 +189,7 @@
         background-color: #fff;
         box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         z-index: 1;
-        min-width: 150px;
+        min-width: 200px;
         border-radius: 4px;
     }
 

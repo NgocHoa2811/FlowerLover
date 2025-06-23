@@ -133,7 +133,7 @@
                             <img src="images/hoasukien.jpg" alt="Hoa sự kiện">
                             <div class="category-overlay">
                                 <div class="category-icon">
-                                    <i class="fas fa-calendar-star"></i>
+                                    <i class="fa-solid fa-bell"></i>
                                 </div>
                             </div>
                         </div>

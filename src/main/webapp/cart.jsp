@@ -93,8 +93,8 @@
                     </div>
                     <div class="cart-actions">
                         <p><strong>Tổng cộng: </strong><span id="totalAmount">0 VND</span></p>
-                        <button type="submit" action ="">Xóa đã chọn</button>
-                        <button formaction="checkout" formmethod="post">Mua hàng</button>
+                        <button type="button" onclick="deleteSelected()">Xóa đã chọn</button>
+                        <button type="button" id="buyButton">Mua hàng</button> <!-- Thay đổi id để dễ gán sự kiện -->
                     </div>
 
                 </form>
@@ -103,6 +103,9 @@
                 <% }%>
             </div>
         </section>
+            
+                <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
 
         <%@ include file="footer.jsp" %>
     </body>

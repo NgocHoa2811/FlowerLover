@@ -10,6 +10,8 @@
         <script>
         var contextPath = "<%=request.getContextPath()%>";
         </script>
+            <!-- Include Chatbot -->
+    <%@ include file="chatbot.jsp" %>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="js/shopping.js"></script>
     </head>
@@ -63,6 +65,7 @@
                 </div>
             </div>
         </section>
+        
 
         <%@ include file="footer.jsp" %>
         <div id="toast" style="
@@ -80,5 +83,5 @@
         ">Đã thêm vào giỏ hàng!</div>
 
     </body>
-    
+
 </html>
