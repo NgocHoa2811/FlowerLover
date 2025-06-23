@@ -21,6 +21,16 @@
             <h1>Bộ sưu tập hoa tươi</h1>
             <p>Khám phá những sản phẩm hoa tươi độc đáo và đẹp mắt của chúng tôi</p>
         </section>
+<section class="search-section">
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm theo tên hoặc loại hoa...">
+            <button id="searchBtn"><i class="fas fa-search"></i> Tìm kiếm</button>
+        </div>
+    </div>
+</section>
+
+
 
         <section class="gallery-nav">
             <div class="container">

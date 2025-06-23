@@ -1,15 +1,17 @@
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8"%>
 <%@page import="java.util.HashMap, java.util.Map" %>
 <%
-    String userEmail = (String) session.getAttribute("user");
-    String fullName = (String) session.getAttribute("fullName");
-    String phone = (String) session.getAttribute("phone");
-    String address = (String) session.getAttribute("address");
-    String initialData = (fullName != null ? fullName : "") + "|" + (userEmail != null ? userEmail : "") + "|" + (phone != null ? phone : "") + "|" + (address != null ? address : "");
-    if (userEmail == null) {
+    String userId = (String) session.getAttribute("userId");
+
+    if (userId == null) {
         response.getWriter().write("<script>alert('Vui lòng đăng nhập!'); window.location.href='login.jsp';</script>");
         return;
     }
+
+    // Dữ liệu từ session (chỉ dùng ban đầu)
+    String fullName = (String) session.getAttribute("fullName");
+    String phone = (String) session.getAttribute("phone");
+    String address = (String) session.getAttribute("address");
 %>
 <!DOCTYPE html>
 <html>
@@ -114,180 +116,167 @@
     </style>
 </head>
 <body>
-    <%@ include file="header.jsp" %>
-    <div class="account-settings">
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-        </div>
-        <h2>Hồ sơ người dùng</h2>
-        <div class="profile-image">
-            <img src="images/avatar.jpg" alt="Profile Image" id="profileImg">
-            <input type="file" id="imageUpload" accept="image/*">
-            <button type="button" class="add-image-btn" onclick="document.getElementById('imageUpload').click()">Thêm ảnh</button>
-        </div>
-        <form id="accountForm" oninput="checkChanges()">
-            <div class="form-group">
-                <label for="fullName">Tên người dùng</label>
-                <input type="text" id="fullName" name="fullName" value="<%= fullName != null ? fullName : "" %>" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="<%= userEmail != null ? userEmail : "" %>" required readonly>
-            </div>
-            <div class="form-group">
-                <label for="phone">Số điện thoại</label>
-                <input type="tel" id="phone" name="phone" value="<%= phone != null ? phone : "" %>" pattern="[0-9]{10}" placeholder="Nhập số điện thoại (10 chữ số)">
-            </div>
-            <div class="form-group">
-                <label for="address">Địa chỉ</label>
-                <textarea id="address" name="address" required><%= address != null ? address : "" %></textarea>
-            </div>
-            <div class="buttons" id="actionButtons"></div>
-        </form>
+<%@ include file="header.jsp" %>
+<div class="account-settings">
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
     </div>
+    <h2>Hồ sơ người dùng</h2>
+    <div class="profile-image">
+        <img src="images/avatar.jpg" alt="Profile Image" id="profileImg">
+        <input type="file" id="imageUpload" accept="image/*">
+        <button type="button" class="add-image-btn" onclick="document.getElementById('imageUpload').click()">Thêm ảnh</button>
+    </div>
+    <form id="accountForm" oninput="checkChanges()">
+        <div class="form-group">
+            <label for="fullName">Tên người dùng</label>
+            <input type="text" id="fullName" name="fullName" value="<%= fullName != null ? fullName : "" %>" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input type="tel" id="phone" name="phone" value="<%= phone != null ? phone : "" %>" pattern="[0-9]{10}" placeholder="Nhập số điện thoại (10 chữ số)">
+        </div>
+        <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <textarea id="address" name="address" required><%= address != null ? address : "" %></textarea>
+        </div>
+        <div class="buttons" id="actionButtons"></div>
+    </form>
+</div>
 
-    <script>
-        let initialData = "<%= initialData %>";
-        const form = document.getElementById('accountForm');
-        const buttons = document.getElementById('actionButtons');
-        const profileImg = document.getElementById('profileImg');
-        const imageUpload = document.getElementById('imageUpload');
-        const contextPath = '<%= request.getContextPath() %>';
-        const loadingOverlay = document.getElementById('loadingOverlay');
+<script>
+    const form = document.getElementById('accountForm');
+    const buttons = document.getElementById('actionButtons');
+    const profileImg = document.getElementById('profileImg');
+    const imageUpload = document.getElementById('imageUpload');
+    const contextPath = '<%= request.getContextPath() %>';
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    let initialData = "";
 
-        function showLoading() {
-            loadingOverlay.style.display = 'flex';
-        }
+    function showLoading() {
+        loadingOverlay.style.display = 'flex';
+    }
 
-        function hideLoading() {
-            loadingOverlay.style.display = 'none';
-        }
+    function hideLoading() {
+        loadingOverlay.style.display = 'none';
+    }
 
-        function fetchUserData(email) {
-            showLoading();
-            fetch(contextPath + '/GetUserServlet?email=' + encodeURIComponent(email), {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                if (data.error) {
-                    console.error('Error fetching user data:', data.error);
-                    form.fullName.value = "<%= fullName != null ? fullName : "" %>";
-                    form.phone.value = "<%= phone != null ? phone : "" %>";
-                    form.address.value = "<%= address != null ? address : "" %>";
-                    profileImg.src = contextPath + '/images/avatar.jpg';
-                    if (window.updateUserImage) window.updateUserImage(contextPath + '/images/avatar.jpg');
-                } else {
-                    form.fullName.value = data.fullName || '';
-                    form.phone.value = data.phone || '';
-                    form.address.value = data.address || '';
-                    const imageSrc = data.profileImage && !data.profileImage.startsWith("data:image") 
-                        ? 'data:image/jpeg;base64,' + data.profileImage 
-                        : contextPath + '/images/avatar.jpg';
-                    profileImg.src = imageSrc;
-                    if (window.updateUserImage) window.updateUserImage(imageSrc);
-                    // Cập nhật initialData sau khi fetch dữ liệu mới
-                    initialData = form.fullName.value + "|" + form.email.value + "|" + form.phone.value + "|" + form.address.value;
-                    checkChanges();
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-                form.fullName.value = "<%= fullName != null ? fullName : "" %>";
-                form.phone.value = "<%= phone != null ? phone : "" %>";
-                form.address.value = "<%= address != null ? address : "" %>";
-                profileImg.src = contextPath + '/images/avatar.jpg';
-                if (window.updateUserImage) window.updateUserImage(contextPath + '/images/avatar.jpg');
-                checkChanges();
-            })
-            .finally(() => {
-                hideLoading();
-            });
-        }
-
-        window.addEventListener('load', () => {
-            const email = form.email.value;
-            if (email) {
-                fetchUserData(email);
-            } else {
-                console.warn('No email found in form, using session data');
-                profileImg.src = contextPath + '/images/avatar.jpg';
-                if (window.updateUserImage) window.updateUserImage(contextPath + '/images/avatar.jpg');
-                checkChanges();
-                hideLoading();
+    function fetchUserDataById(userId) {
+        showLoading();
+        fetch(contextPath + '/GetUserServlet?id=' + encodeURIComponent(userId), {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch: ' + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
             }
+
+            form.email.value = data.email || '';
+            form.fullName.value = data.fullName || '';
+            form.phone.value = data.phone || '';
+            form.address.value = data.address || '';
+
+            const imageSrc = data.profileImage && !data.profileImage.startsWith("data:image")
+                ? 'data:image/jpeg;base64,' + data.profileImage
+                : contextPath + '/images/avatar.jpg';
+            profileImg.src = imageSrc;
+
+            if (window.updateUserImage) window.updateUserImage(imageSrc);
+
+            initialData = form.fullName.value + "|" + form.email.value + "|" + form.phone.value + "|" + form.address.value;
+            checkChanges();
+        })
+        .catch(error => {
+            console.error('Lỗi khi lấy thông tin user:', error);
+        })
+        .finally(() => {
+            hideLoading();
         });
+    }
 
-        imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profileImg.src = e.target.result;
-                    if (window.updateUserImage) window.updateUserImage(e.target.result);
-                };
-                reader.readAsDataURL(file);
-                checkChanges();
-            }
+    window.addEventListener('load', () => {
+        const userId = '<%= userId %>';
+        if (userId) {
+            fetchUserDataById(userId);
+        } else {
+            alert("Không tìm thấy ID người dùng. Vui lòng đăng nhập lại.");
+            window.location.href = "login.jsp";
+        }
+    });
+
+    imageUpload.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profileImg.src = e.target.result;
+                if (window.updateUserImage) window.updateUserImage(e.target.result);
+            };
+            reader.readAsDataURL(file);
+            checkChanges();
+        }
+    });
+
+    function checkChanges() {
+        const currentData = form.fullName.value + "|" + form.email.value + "|" + form.phone.value + "|" + form.address.value;
+        if (currentData !== initialData || imageUpload.files.length > 0) {
+            buttons.style.display = 'block';
+            buttons.innerHTML = '<button type="button" class="save-btn" onclick="saveChanges()">Lưu thay đổi</button><button type="button" class="cancel-btn" onclick="resetForm()">Hủy</button>';
+        } else {
+            buttons.style.display = 'none';
+        }
+    }
+
+    function saveChanges() {
+        showLoading();
+        const fullName = form.fullName.value;
+        const email = form.email.value;
+        const phone = form.phone.value;
+        const address = form.address.value;
+        const profileImage = imageUpload.files.length > 0 ? imageUpload.files[0] : null;
+
+        const formData = new FormData();
+        formData.append('fullName', fullName);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('address', address);
+        if (profileImage) formData.append('profileImage', profileImage);
+
+        fetch(contextPath + '/UpdateUserServlet', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Lỗi server: ' + response.status);
+            return response.text();
+        })
+        .then(data => {
+            alert(data);
+            fetchUserDataById('<%= userId %>'); // cập nhật lại sau khi lưu
+        })
+        .catch(error => {
+            alert("Lỗi khi lưu thay đổi: " + error.message);
+        })
+        .finally(() => {
+            hideLoading();
         });
+    }
 
-        function checkChanges() {
-            const currentData = form.fullName.value + "|" + form.email.value + "|" + form.phone.value + "|" + form.address.value;
-            if (currentData !== initialData || imageUpload.files.length > 0) {
-                buttons.style.display = 'block';
-                buttons.innerHTML = '<button type="button" class="save-btn" onclick="saveChanges()">Lưu thay đổi</button><button type="button" class="cancel-btn" onclick="resetForm()">Hủy</button>';
-            } else {
-                buttons.style.display = 'none';
-            }
-        }
+    function resetForm() {
+        fetchUserDataById('<%= userId %>');
+    }
+</script>
 
-        function saveChanges() {
-            showLoading();
-            const fullName = form.fullName.value;
-            const email = form.email.value;
-            const phone = form.phone.value;
-            const address = form.address.value;
-            const profileImage = imageUpload.files.length > 0 ? imageUpload.files[0] : null;
-
-            const formData = new FormData();
-            formData.append('fullName', fullName);
-            formData.append('email', email);
-            formData.append('phone', phone);
-            formData.append('address', address);
-            if (profileImage) formData.append('profileImage', profileImage);
-
-            fetch(contextPath + '/UpdateUserServlet', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Server error: ' + response.status);
-                return response.text();
-            })
-            .then(data => {
-                alert(data);
-                fetchUserData(email); // Cập nhật lại dữ liệu sau khi lưu
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Lỗi: ' + error.message);
-            })
-            .finally(() => {
-                hideLoading();
-            });
-        }
-
-        function resetForm() {
-            fetchUserData(form.email.value); // Reset về dữ liệu gốc
-        }
-
-        // Kiểm tra thay đổi ban đầu
-        checkChanges();
-    </script>
-    <%@ include file="footer.jsp" %>
+<%@ include file="footer.jsp" %>
 </body>
 </html>
