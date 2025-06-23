@@ -1,4 +1,6 @@
 let currentPage = 1; // Khai báo biến toàn cục
+let isSearching = false;
+
 
 function showToast(message) {
     const toast = $('#toast');
@@ -156,9 +158,40 @@ $('.cart-icon').off('click').on('click', function (e) {
 $(document).ready(function () {
     // Tải sản phẩm khi trang được tải
     loadProducts();
+  
+
+    
+        // Xử lý tìm kiếm khi bấm nút
+    $('#searchBtn').on('click', function () {
+    const keyword = $('#searchInput').val().trim();
+    if (keyword === '') {
+        isSearching = false;
+        loadProducts(currentPage); // Nếu trống → load lại tất cả sản phẩm
+    } else {
+        searchProducts(keyword);
+    }
+});
+
+
+    // Xử lý tìm kiếm khi nhấn Enter
+    $('#searchInput').on('keypress', function (e) {
+    if (e.which === 13) { // phím Enter
+        e.preventDefault();
+        const keyword = $(this).val().trim();
+        if (keyword === '') {
+            isSearching = false;
+            loadProducts(currentPage); // Nếu trống → load lại tất cả
+        } else {
+            searchProducts(keyword);
+        }
+    }
+});
+
+
 
     // Xử lý lọc theo danh mục
     $('.category-btn').on('click', function () {
+        isSearching = false; 
         $('.category-btn').removeClass('active');
         $(this).addClass('active');
 
@@ -172,5 +205,25 @@ $(document).ready(function () {
     });
 
     // Tự động cập nhật sản phẩm
-    setInterval(() => loadProducts(currentPage), 5000); // Kiểm tra mỗi 5 giây
+    setInterval(() => {
+    if (!isSearching) {
+        loadProducts(currentPage);
+    }
+}, 5000);
+
 });
+//tim kiem
+function searchProducts(keyword) {
+    isSearching = true; // Đánh dấu đang tìm kiếm
+
+    fetch(contextPath + '/search-products?keyword=' + encodeURIComponent(keyword))
+        .then(res => res.json())
+        .then(products => {
+            renderProducts(products, [], {});
+        })
+        .catch(err => {
+            $('#productGrid').html('<p style="color:red;text-align:center;">Không tìm thấy sản phẩm.</p>');
+        });
+}
+
+

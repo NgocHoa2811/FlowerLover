@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,15 +33,16 @@ public class GetUserServlet extends HttpServlet {
     }
 
     @Override
-       protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("GetUserServlet: doGet called");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
-        System.out.println("GetUserServlet called with email: " + email);
+        String id = request.getParameter("id"); // hỗ trợ truy cập bằng _id (ObjectId dạng chuỗi)
 
-        if (email == null || email.isEmpty()) {
+        System.out.println("GetUserServlet: called with email=" + email + ", id=" + id);
+
+        if ((email == null || email.isEmpty()) && (id == null || id.isEmpty())) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\":\"Email không được cung cấp\"}");
+            response.getWriter().write("{\"error\":\"Phải cung cấp email hoặc id để truy vấn\"}");
             return;
         }
 
@@ -48,27 +50,38 @@ public class GetUserServlet extends HttpServlet {
             MongoDatabase database = mongoClient.getDatabase("flowerlover");
             MongoCollection<Document> collection = database.getCollection("users");
 
-            Document query = new Document("email", email);
-            Document user = collection.find(query).first();
+            Document user = null;
+
+            if (email != null && !email.isEmpty()) {
+                user = collection.find(new Document("email", email)).first();
+            } else if (id != null && !id.isEmpty()) {
+                try {
+                    user = collection.find(Filters.eq("_id", new ObjectId(id))).first();
+                } catch (IllegalArgumentException e) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"error\":\"ID không hợp lệ\"}");
+                    return;
+                }
+            }
 
             if (user != null) {
-                // Tạo đối tượng JSON để trả về
                 Document responseDoc = new Document()
+                    .append("email", user.getString("email") != null ? user.getString("email") : "")
                     .append("fullName", user.getString("fullName") != null ? user.getString("fullName") : "")
                     .append("phone", user.getString("phone") != null ? user.getString("phone") : "")
                     .append("address", user.getString("address") != null ? user.getString("address") : "")
                     .append("profileImage", user.getString("profileImage") != null ? user.getString("profileImage") : "");
-
-                // Sử dụng Gson để chuyển đổi thành JSON
+                     
                 String jsonResponse = new Gson().toJson(responseDoc);
                 response.setContentType("application/json");
                 response.getWriter().write(jsonResponse);
-                System.out.println("User data fetched for email: " + email + ", Response: " + jsonResponse);
+                System.out.println("User data found and returned.");
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.setContentType("application/json");
                 response.getWriter().write("{\"error\":\"Không tìm thấy user\"}");
-                System.out.println("No user found for email: " + email);
+                System.out.println("No user found.");
             }
         } catch (Exception e) {
             System.out.println("Error fetching user data: " + e.getMessage());

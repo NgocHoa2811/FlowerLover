@@ -56,6 +56,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user", user.getObjectId("_id").toHexString());
                     session.setAttribute("role", user.getString("role"));
                     session.setAttribute("userEmail", email); // thêm dòng này
+                    session.setAttribute("userId", user.getObjectId("_id").toHexString());
 
 
                     // Debug: In tham số redirect
